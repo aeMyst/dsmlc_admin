@@ -24,3 +24,7 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.instrument {
+  font-family: var(--font-instrument-serif), ui-serif, Georgia, serif;
+}
