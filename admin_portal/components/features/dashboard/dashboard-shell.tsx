@@ -2,8 +2,8 @@ import type React from "react";
 import Link from "next/link";
 
 import { siteConfig } from "@/config/site";
-import { SidebarNav } from "@/components/features/dashboard/sidebar_nav";
-import { MobileNav } from "@/components/features/dashboard/mobile_nav";
+import { SidebarNav } from "@/components/features/dashboard/sidebar-nav";
+import { MobileNav } from "@/components/features/dashboard/mobile-nav";
 
 interface DashboardShellProps {
   children: React.ReactNode;

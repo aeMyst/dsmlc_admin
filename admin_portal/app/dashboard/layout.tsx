@@ -1,6 +1,6 @@
 import type React from "react";
 
-import { DashboardShell } from "@/components/features/dashboard/dashboard_shell";
+import { DashboardShell } from "@/components/features/dashboard/dashboard-shell";
 
 export default function DashboardLayout({
   children,

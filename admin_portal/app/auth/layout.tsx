@@ -1,5 +1,5 @@
 import type React from "react";
-import { ShaderBackground } from "@/components/ui/hero/hero_section";
+import { ShaderBackground } from "@/components/ui/hero/hero-section";
 
 export default function AuthLayout({
   children,

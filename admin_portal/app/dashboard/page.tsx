@@ -7,10 +7,10 @@ import {
 } from "@/lib/dashboard";
 
 import { PageHeader } from "@/components/ui/dashboard/header";
-import { StatCard } from "@/components/ui/dashboard/stat_card";
-import { AttendanceLineChart } from "@/components/features/dashboard/attendance_line_chart";
-import { RsvpTurnoutChart } from "@/components/features/dashboard/rsvp_chart";
-import { CategoryBreakdown } from "@/components/features/dashboard/category_breakdown";
+import { StatCard } from "@/components/ui/dashboard/stat-card";
+import { AttendanceLineChart } from "@/components/features/dashboard/attendance-chart";
+import { RsvpTurnoutChart } from "@/components/features/dashboard/rsvp-chart";
+import { CategoryBreakdown } from "@/components/features/dashboard/category-breakdown";
 
 function formatShortDate(iso: string) {
   return new Date(iso).toLocaleDateString(undefined, {

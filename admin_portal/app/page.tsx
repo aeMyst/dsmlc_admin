@@ -1,4 +1,4 @@
-import { ShaderBackground } from "@/components/ui/hero/hero_section";
+import { ShaderBackground } from "@/components/ui/hero/hero-section";
 import { AuthCard } from "@/components/features/auth/auth-card";
 
 export default function LandingPage() {

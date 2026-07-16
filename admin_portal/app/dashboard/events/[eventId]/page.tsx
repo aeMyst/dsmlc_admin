@@ -7,8 +7,8 @@ import {
   getEventRsvpVsAttended,
   getEventsWithStats,
 } from "@/lib/dashboard";
-import { StatCard } from "@/components/ui/dashboard/stat_card";
-import { RsvpTurnoutChart } from "@/components/features/dashboard/rsvp_chart";
+import { StatCard } from "@/components/ui/dashboard/stat-card";
+import { RsvpTurnoutChart } from "@/components/features/dashboard/rsvp-chart";
 
 interface PageProps {
   params: Promise<{ eventId: string }>;

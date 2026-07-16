@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
-import { SidebarNav } from "@/components/features/dashboard/sidebar_nav";
+import { SidebarNav } from "@/components/features/dashboard/sidebar-nav";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);

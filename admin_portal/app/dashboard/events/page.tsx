@@ -1,6 +1,6 @@
 import { getEventsWithStats } from "@/lib/dashboard";
 import { PageHeader } from "@/components/ui/dashboard/header";
-import { EventsTable } from "@/components/features/dashboard/events_table";
+import { EventsTable } from "@/components/features/dashboard/events-table";
 
 export default async function EventsPage() {
   const events = await getEventsWithStats();

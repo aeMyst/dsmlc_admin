@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import type React from "react";
 
 import { createClient } from "@/lib/supabase/client";
-import { ShaderBackground } from "@/components/ui/hero/hero_section";
+import { ShaderBackground } from "@/components/ui/hero/hero-section";
 
 export default function SetPasswordPage() {
   const router = useRouter();
