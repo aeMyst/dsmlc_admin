@@ -1,7 +1,7 @@
 export const siteConfig = {
-  name: "Your Product",
+  name: "Analytics Dashboard",
   description: "Beautiful shader experiences.",
-  orgSubtitle: "Your Organization",
+  orgSubtitle: "DSMLC UCalgary",
   semesterLabel: "Spring 2026 Semester",
   marketingNav: [
     { label: "Features", href: "#features" },

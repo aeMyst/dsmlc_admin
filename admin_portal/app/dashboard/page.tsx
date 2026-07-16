@@ -6,7 +6,6 @@ import {
   getCategoryRatings,
 } from "@/lib/dashboard";
 
-import { PageHeader } from "@/components/ui/dashboard/header";
 import { StatCard } from "@/components/ui/dashboard/stat-card";
 import { AttendanceLineChart } from "@/components/features/dashboard/attendance-chart";
 import { RsvpTurnoutChart } from "@/components/features/dashboard/rsvp-chart";
@@ -39,11 +38,6 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <PageHeader
-        title="Dashboard"
-        subtitle="Overview of club event performance this semester"
-      />
-
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           label="Total Events"
