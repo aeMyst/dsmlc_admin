@@ -7,12 +7,10 @@ import { NAV_ICONS } from "@/lib/nav-icons";
 
 const DESCRIPTIONS: Record<string, string> = {
   "/dashboard": "Overview of club event performance this semester",
-  "/dashboard/events": "Browse and manage all events",
-  "/dashboard/attendance":
-    "Students attending for course credit, across all events",
-  "/dashboard/sources": "Where registrants say they heard about us",
-  "/dashboard/membership": "Members and mailing list subscribers",
-  "/dashboard/exports": "Filter and download registration data",
+  "/dashboard/events":
+    "Browse events, view details, and export registration data",
+  "/dashboard/memberships": "Manage club members and mailing list subscribers",
+  "/dashboard/people": "Everyone on record, plus course-credit exports",
 };
 
 function resolveTitle(pathname: string) {

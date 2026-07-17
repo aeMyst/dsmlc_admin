@@ -8,7 +8,7 @@ import { Menu, X } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
 import { SidebarNav } from "@/components/features/dashboard/sidebar-nav";
-import { AccountFooter } from "@/components/features/dashboard/account-footer";
+import { AccountFooter } from "@/components/features/dashboard/navbar-footer";
 import type { CurrentAdmin } from "@/lib/queries/admin-profile";
 
 interface MobileNavProps {
@@ -50,7 +50,7 @@ export function MobileNav({ admin }: MobileNavProps) {
       </button>
 
       <div
-        className={`fixed inset-0 z-50 md:hidden ${open ? "" : "pointer-events-none"}`}
+        className={`fixed inset-0 z-50 overflow-hidden md:hidden ${open ? "" : "pointer-events-none"}`}
         aria-hidden={!open}
       >
         <button

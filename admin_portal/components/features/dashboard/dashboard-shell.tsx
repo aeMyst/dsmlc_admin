@@ -4,9 +4,9 @@ import Image from "next/image";
 import { siteConfig } from "@/config/site";
 import { SidebarNav } from "@/components/features/dashboard/sidebar-nav";
 import { MobileNav } from "@/components/features/dashboard/mobile-nav";
-import { AccountFooter } from "@/components/features/dashboard/account-footer";
+import { AccountFooter } from "@/components/features/dashboard/navbar-footer";
 import { getCurrentAdmin } from "@/lib/queries/admin-profile";
-import { TopBarTitle } from "@/components/features/dashboard/top-bar-title";
+import { TopBarTitle } from "@/components/features/dashboard/header";
 
 interface DashboardShellProps {
   children: React.ReactNode;
@@ -67,12 +67,12 @@ export async function DashboardShell({ children }: DashboardShellProps) {
         </div>
       </div>
 
-      <div className="md:pl-64">
+      <div className="overflow-x-hidden md:pl-64">
         <div className="hidden items-center border-b border-white/10 px-8 py-4 md:flex">
           <TopBarTitle />
         </div>
 
-        <main className="flex-1 p-4 md:p-8">{children}</main>
+        <main className="flex-1 overflow-x-hidden p-4 md:p-8">{children}</main>
       </div>
     </div>
   );

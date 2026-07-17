@@ -11,7 +11,7 @@ import {
 } from "recharts";
 
 interface Props {
-  data: { label: string; rsvp: number; attended: number }[];
+  data: { label: string; rsvp: number; attended: number; atDoor?: number }[];
 }
 
 export function RsvpTurnoutChart({ data }: Props) {
@@ -45,6 +45,12 @@ export function RsvpTurnoutChart({ data }: Props) {
           dataKey="attended"
           name="Attended"
           fill="#F86306"
+          radius={[4, 4, 0, 0]}
+        />
+        <Bar
+          dataKey="atDoor"
+          name="At-door"
+          fill="#FF914D"
           radius={[4, 4, 0, 0]}
         />
       </BarChart>

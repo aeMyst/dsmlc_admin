@@ -1,15 +1,21 @@
+// TEMPORARY: mock data for the stat cards/charts below — see note in
+// lib/mock/dashboard.ts. Member Growth pulls from real Supabase data
+// already, since it needs real MEMBERSHIP rows to mean anything.
 import {
   getOverviewStats,
   getAttendanceOverTime,
   getRsvpVsAttendedSeries,
-  getCategoryBreakdown,
   getCategoryRatings,
+  getSignupSourceBreakdown,
 } from "@/lib/dashboard";
+import { getMemberGrowth } from "@/lib/queries/growth";
 
 import { StatCard } from "@/components/ui/dashboard/stat-card";
-import { AttendanceLineChart } from "@/components/features/dashboard/attendance-chart";
-import { RsvpTurnoutChart } from "@/components/features/dashboard/rsvp-chart";
-import { CategoryBreakdown } from "@/components/features/dashboard/category-breakdown";
+import { AttendanceLineChart } from "@/components/features/dashboard/graphs/attendance-chart";
+import { RsvpTurnoutChart } from "@/components/features/dashboard/graphs/rsvp-chart";
+import { CategoryBreakdown } from "@/components/features/dashboard/graphs/category-breakdown";
+import { SignupSourceChart } from "@/components/features/dashboard/graphs/signup-chart";
+import { MemberGrowthChart } from "@/components/features/dashboard/graphs/member-chart";
 
 function formatShortDate(iso: string) {
   return new Date(iso).toLocaleDateString(undefined, {
@@ -19,22 +25,27 @@ function formatShortDate(iso: string) {
 }
 
 export default async function DashboardPage() {
-  const [stats, attendanceOverTime, rsvpSeries, categories, categoryRatings] =
-    await Promise.all([
-      getOverviewStats(),
-      getAttendanceOverTime(),
-      getRsvpVsAttendedSeries(),
-      getCategoryBreakdown(),
-      getCategoryRatings(),
-    ]);
+  const [
+    stats,
+    attendanceOverTime,
+    rsvpSeries,
+    categoryRatings,
+    sources,
+    memberGrowth,
+  ] = await Promise.all([
+    getOverviewStats(),
+    getAttendanceOverTime(),
+    getRsvpVsAttendedSeries(),
+    getCategoryRatings(),
+    getSignupSourceBreakdown(),
+    getMemberGrowth(),
+  ]);
 
   const rsvpChartData = rsvpSeries.map((d) => ({
     label: formatShortDate(d.date),
     rsvp: d.rsvp,
     attended: d.attended,
   }));
-
-  const maxCategoryCount = Math.max(...categories.map((c) => c.count), 1);
 
   return (
     <div>
@@ -81,15 +92,6 @@ export default async function DashboardPage() {
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <CategoryBreakdown
-          title="Events by Category"
-          items={categories.map((c) => ({
-            label: c.category,
-            percent: (c.count / maxCategoryCount) * 100,
-            display: `${c.count} · ${c.percent}%`,
-          }))}
-        />
-
-        <CategoryBreakdown
           title="Avg Rating by Category"
           items={categoryRatings.map((c) => ({
             label: c.category,
@@ -97,6 +99,20 @@ export default async function DashboardPage() {
             display: `★ ${c.avgRating}`,
           }))}
         />
+
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+          <h2 className="mb-4 text-sm font-light text-white/70">
+            Member Growth
+          </h2>
+          <MemberGrowthChart data={memberGrowth} />
+        </div>
+      </div>
+
+      <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6">
+        <h2 className="mb-4 text-sm font-light text-white/70">
+          Sign-up Source
+        </h2>
+        <SignupSourceChart data={sources} />
       </div>
     </div>
   );
