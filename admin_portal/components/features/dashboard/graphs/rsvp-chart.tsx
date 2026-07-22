@@ -16,11 +16,24 @@ interface Props {
   data: { label: string; rsvp: number; attended: number; atDoor?: number }[];
 }
 
+function truncateLabel(label: string, max = 14) {
+  return label.length > max ? `${label.slice(0, max - 1)}…` : label;
+}
+
 export function RsvpTurnoutChart({ data }: Props) {
   return (
-    <ResponsiveContainer width="100%" height={260}>
-      <BarChart data={data} barGap={4}>
-        <XAxis dataKey="label" stroke="rgba(255,255,255,0.4)" fontSize={12} />
+    <ResponsiveContainer width="100%" height={300}>
+      <BarChart data={data} barGap={4} margin={{ bottom: 24 }}>
+        <XAxis
+          dataKey="label"
+          stroke="rgba(255,255,255,0.4)"
+          fontSize={12}
+          interval={0}
+          angle={-25}
+          textAnchor="end"
+          height={60}
+          tickFormatter={(value: string) => truncateLabel(value)}
+        />
         <YAxis
           stroke="rgba(255,255,255,0.4)"
           fontSize={12}

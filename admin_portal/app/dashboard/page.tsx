@@ -1,10 +1,8 @@
 import {
-  getOverviewStats,
-  getAttendanceOverTime,
-  getRsvpVsAttendedSeries,
+  getDashboardOverview,
   getCategoryRatings,
   getSignupSourceBreakdown,
-} from "@/lib/dashboard";
+} from "@/lib/queries/dashboard-overview";
 import { getMemberGrowth } from "@/lib/queries/growth";
 
 import { StatCard } from "@/components/ui/dashboard/stat-card";
@@ -14,50 +12,43 @@ import { CategoryBreakdown } from "@/components/features/dashboard/graphs/catego
 import { SignupSourceChart } from "@/components/features/dashboard/graphs/signup-chart";
 import { MemberGrowthChart } from "@/components/features/dashboard/graphs/member-chart";
 
-function formatShortDate(iso: string) {
-  return new Date(iso).toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-  });
-}
-
 export default async function DashboardPage() {
   const [
-    stats,
-    attendanceOverTime,
-    rsvpSeries,
+    { stats, attendanceOverTime, rsvpSeries },
     categoryRatings,
     sources,
     memberGrowth,
   ] = await Promise.all([
-    getOverviewStats(),
-    getAttendanceOverTime(),
-    getRsvpVsAttendedSeries(),
+    getDashboardOverview(),
     getCategoryRatings(),
     getSignupSourceBreakdown(),
     getMemberGrowth(),
   ]);
 
   const rsvpChartData = rsvpSeries.map((d) => ({
-    label: formatShortDate(d.date),
+    label: d.eventName,
     rsvp: d.rsvp,
     attended: d.attended,
+    atDoor: d.atDoor,
   }));
 
   return (
     <div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
+          index={0}
           label="Total Events"
           value={stats.totalEvents}
           caption="This semester"
         />
         <StatCard
+          index={1}
           label="Total Attendees"
           value={stats.totalAttendees}
           caption="Across all events"
         />
         <StatCard
+          index={2}
           label="Avg. Turnout Rate"
           value={`${stats.avgTurnoutRate}%`}
           caption={
@@ -65,6 +56,7 @@ export default async function DashboardPage() {
           }
         />
         <StatCard
+          index={3}
           label="Avg. Rating"
           value={`★ ${stats.avgRating}`}
           caption="Out of 5.0"

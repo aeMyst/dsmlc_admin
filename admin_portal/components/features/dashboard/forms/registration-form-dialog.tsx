@@ -34,6 +34,7 @@ const SOURCE_OPTIONS = [
   { value: "LinkedIn", label: "LinkedIn" },
   { value: "Website", label: "Website" },
   { value: "Word-of-Mouth", label: "Word-of-Mouth" },
+  { value: "I'd rather not say", label: "I'd rather not say" },
 ];
 
 export function RegistrationFormDialog({
@@ -115,7 +116,7 @@ export function RegistrationFormDialog({
           label="Sign-up Source"
           name="coming_from"
           defaultValue={registration?.coming_from ?? ""}
-          placeholder="none"
+          placeholder="no selection"
           options={SOURCE_OPTIONS}
         />
 
