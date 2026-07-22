@@ -2,6 +2,7 @@ import { getMembers } from "@/lib/queries/members";
 import { MemberFormDialog } from "@/components/features/dashboard/forms/member-form-dialog";
 import { MembershipsTable } from "@/components/features/dashboard/tables/memberships-table";
 import { CategoryBreakdown } from "@/components/features/dashboard/graphs/category-breakdown";
+import { MailingListActions } from "@/components/features/dashboard/mailing-list";
 import { TriggerLabel } from "@/components/ui/button";
 
 export default async function MembershipsPage() {
@@ -22,7 +23,8 @@ export default async function MembershipsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-end">
+      <div className="flex flex-wrap justify-end gap-3">
+        <MailingListActions members={members} />
         <MemberFormDialog
           mode="create"
           trigger={<TriggerLabel variant="primary">+ Add member</TriggerLabel>}

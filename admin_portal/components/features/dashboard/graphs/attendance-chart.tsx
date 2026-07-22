@@ -10,16 +10,10 @@ import {
 } from "recharts";
 
 import { BRAND } from "@/lib/palette";
+import { formatDate } from "@/lib/date";
 
 interface Props {
   data: { date: string; attended: number; label: string }[];
-}
-
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-  });
 }
 
 export function AttendanceLineChart({ data }: Props) {

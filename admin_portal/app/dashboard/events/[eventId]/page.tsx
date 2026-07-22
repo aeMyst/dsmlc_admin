@@ -11,6 +11,7 @@ import {
   getEventCourseCreditRegistrations,
   getRegistrationsByEvent,
 } from "@/lib/queries/registrations";
+import { formatDate } from "@/lib/date";
 import { StatCard } from "@/components/ui/dashboard/stat-card";
 import { RsvpTurnoutChart } from "@/components/features/dashboard/graphs/rsvp-chart";
 import { CourseRetentionChart } from "@/components/features/dashboard/graphs/course-retention-chart";
@@ -66,10 +67,7 @@ export default async function EventDetailPage({
               {event.event_type}
             </span>
             <span className="text-xs font-light text-white/40">
-              {new Date(event.event_date).toLocaleDateString(undefined, {
-                month: "short",
-                day: "numeric",
-              })}
+              {formatDate(event.event_date)}
             </span>
           </div>
 
@@ -83,8 +81,13 @@ export default async function EventDetailPage({
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <StatCard label="Turnout Rate" value={`${event.turnoutRate}%`} />
         <StatCard
+          index={0}
+          label="Turnout Rate"
+          value={`${event.turnoutRate}%`}
+        />
+        <StatCard
+          index={1}
           label="Avg. Rating"
           value={event.avgRating !== null ? `★ ${event.avgRating}` : "—"}
         />

@@ -5,6 +5,7 @@ import {
   DataTable,
   type DataTableColumn,
 } from "@/components/ui/dashboard/data-table";
+import { formatDate } from "@/lib/date";
 
 interface EventRow {
   event_id: string;
@@ -50,11 +51,7 @@ const columns: DataTableColumn<EventRow>[] = [
     id: "date",
     header: "Date",
     width: "12%",
-    render: (event) =>
-      new Date(event.event_date).toLocaleDateString(undefined, {
-        month: "short",
-        day: "numeric",
-      }),
+    render: (event) => formatDate(event.event_date),
     className: "px-6 py-4 text-white/50",
   },
   {

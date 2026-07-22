@@ -10,29 +10,23 @@ import {
 } from "recharts";
 
 import { BRAND } from "@/lib/palette";
+import { formatDate } from "@/lib/date";
 
 interface Props {
-  data: { month: string; cumulativeMembers: number; newMembers: number }[];
-}
-
-function formatMonthLabel(month: string) {
-  return new Date(`${month}-01`).toLocaleDateString(undefined, {
-    month: "short",
-    year: "2-digit",
-  });
+  data: { date: string; cumulativeMembers: number; newMembers: number }[];
 }
 
 export function MemberGrowthChart({ data }: Props) {
   const chartData = data.map((d) => ({
     ...d,
-    monthLabel: formatMonthLabel(d.month),
+    dateLabel: formatDate(d.date),
   }));
 
   return (
     <ResponsiveContainer width="100%" height={260}>
       <LineChart data={chartData}>
         <XAxis
-          dataKey="monthLabel"
+          dataKey="dateLabel"
           stroke="rgba(255,255,255,0.4)"
           fontSize={12}
         />
