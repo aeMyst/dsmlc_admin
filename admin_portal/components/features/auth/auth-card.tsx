@@ -3,10 +3,6 @@
 import Image from "next/image";
 import { LoginForm } from "@/components/features/auth/login-form";
 
-{
-  new Date().getFullYear();
-}
-
 export function AuthCard() {
   return (
     <div className="relative grid w-full max-w-5xl grid-cols-1 overflow-hidden rounded-3xl border border-white/10 backdrop-blur-xl bg-black/90 md:grid-cols-2">

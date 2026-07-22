@@ -3,12 +3,9 @@
 import { revalidatePath } from "next/cache"
 
 import { createClient } from "@/lib/supabase/server"
+import type { EventActionState } from "@/lib/actions/types"
 
-export interface EventActionState {
-  error?: string
-  success?: boolean
-  eventId?: string
-}
+export type { EventActionState }
 
 export async function createEvent(
   _prevState: EventActionState,

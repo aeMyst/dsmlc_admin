@@ -9,6 +9,8 @@ import {
   YAxis,
 } from "recharts";
 
+import { BRAND } from "@/lib/palette";
+
 interface Props {
   data: { source: string; count: number }[];
 }
@@ -38,7 +40,7 @@ export function SignupSourceChart({ data }: Props) {
           labelStyle={{ color: "#fff" }}
           cursor={{ fill: "rgba(255,255,255,0.04)" }}
         />
-        <Bar dataKey="count" fill="#F86306" radius={[0, 4, 4, 0]} />
+        <Bar dataKey="count" fill={BRAND} radius={[0, 4, 4, 0]} />
       </BarChart>
     </ResponsiveContainer>
   );

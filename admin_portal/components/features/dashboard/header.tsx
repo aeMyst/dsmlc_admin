@@ -49,7 +49,7 @@ export function TopBarTitle() {
       {Icon && (
         <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/5 md:h-12 md:w-12">
           <Icon
-            className="h-5 w-5 text-[#F86306] md:h-6 md:w-6"
+            className="h-5 w-5 text-brand md:h-6 md:w-6"
             strokeWidth={1.75}
           />
         </span>

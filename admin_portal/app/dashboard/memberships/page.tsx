@@ -2,6 +2,7 @@ import { getMembers } from "@/lib/queries/members";
 import { MemberFormDialog } from "@/components/features/dashboard/forms/member-form-dialog";
 import { MembershipsTable } from "@/components/features/dashboard/tables/memberships-table";
 import { CategoryBreakdown } from "@/components/features/dashboard/graphs/category-breakdown";
+import { TriggerLabel } from "@/components/ui/button";
 
 export default async function MembershipsPage() {
   const members = await getMembers();
@@ -24,11 +25,7 @@ export default async function MembershipsPage() {
       <div className="flex justify-end">
         <MemberFormDialog
           mode="create"
-          trigger={
-            <span className="cursor-pointer rounded-full bg-[#F86306] px-5 py-2.5 text-sm font-normal text-white transition-colors hover:bg-[#FF914D]">
-              + Add member
-            </span>
-          }
+          trigger={<TriggerLabel variant="primary">+ Add member</TriggerLabel>}
         />
       </div>
 

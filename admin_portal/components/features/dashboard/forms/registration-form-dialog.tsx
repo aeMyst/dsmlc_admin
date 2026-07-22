@@ -1,7 +1,6 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useState } from "react";
-import { useFormStatus } from "react-dom";
 import type React from "react";
 
 import {
@@ -11,6 +10,8 @@ import {
 } from "@/lib/actions/registrations";
 import type { RegistrationRow } from "@/lib/queries/registrations";
 import { FormDialogShell } from "@/components/features/dashboard/forms/form-dialog-shell";
+import { Button, SubmitButton } from "@/components/ui/button";
+import { TextField, SelectField } from "@/components/ui/form-field";
 
 interface RegistrationFormDialogProps {
   mode: "create" | "edit";
@@ -21,23 +22,19 @@ interface RegistrationFormDialogProps {
 
 const initialState: ActionState = {};
 
-const inputClass =
-  "w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-white/40";
+const STATUS_OPTIONS = [
+  { value: "registered", label: "Registered" },
+  { value: "attended", label: "Attended" },
+  { value: "at-door", label: "At-door (walk-in)" },
+];
 
-const optionClass = "bg-white text-black";
-
-function SubmitButton({ label }: { label: string }) {
-  const { pending } = useFormStatus();
-  return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="rounded-full bg-white px-5 py-2.5 text-sm font-normal text-black transition-all hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-60"
-    >
-      {pending ? "Saving…" : label}
-    </button>
-  );
-}
+const SOURCE_OPTIONS = [
+  { value: "Mailman", label: "Mailman" },
+  { value: "Instagram", label: "Instagram" },
+  { value: "LinkedIn", label: "LinkedIn" },
+  { value: "Website", label: "Website" },
+  { value: "Word-of-Mouth", label: "Word-of-Mouth" },
+];
 
 export function RegistrationFormDialog({
   mode,
@@ -77,45 +74,15 @@ export function RegistrationFormDialog({
         {mode === "create" ? (
           <>
             <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="mb-1.5 block text-xs font-light text-white/60">
-                  First name *
-                </label>
-                <input name="first_name" required className={inputClass} />
-              </div>
-              <div>
-                <label className="mb-1.5 block text-xs font-light text-white/60">
-                  Last name *
-                </label>
-                <input name="last_name" required className={inputClass} />
-              </div>
+              <TextField label="First name *" name="first_name" required />
+              <TextField label="Last name *" name="last_name" required />
             </div>
 
-            <div>
-              <label className="mb-1.5 block text-xs font-light text-white/60">
-                Email *
-              </label>
-              <input
-                name="email"
-                type="email"
-                required
-                className={inputClass}
-              />
-            </div>
+            <TextField label="Email *" name="email" type="email" required />
 
             <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="mb-1.5 block text-xs font-light text-white/60">
-                  Student ID *
-                </label>
-                <input name="student_id" className={inputClass} />
-              </div>
-              <div>
-                <label className="mb-1.5 block text-xs font-light text-white/60">
-                  Major
-                </label>
-                <input name="major" className={inputClass} />
-              </div>
+              <TextField label="Student ID *" name="student_id" />
+              <TextField label="Major" name="major" />
             </div>
           </>
         ) : (
@@ -130,84 +97,43 @@ export function RegistrationFormDialog({
           )
         )}
 
-        <div>
-          <label className="mb-1.5 block text-xs font-light text-white/60">
-            Status *
-          </label>
-          <select
-            name="status"
-            defaultValue={registration?.status ?? "registered"}
-            className={inputClass}
-          >
-            <option value="registered" className={optionClass}>
-              Registered
-            </option>
-            <option value="attended" className={optionClass}>
-              Attended
-            </option>
-            <option value="at-door" className={optionClass}>
-              At-door (walk-in)
-            </option>
-          </select>
-        </div>
+        <SelectField
+          label="Status *"
+          name="status"
+          defaultValue={registration?.status ?? "registered"}
+          options={STATUS_OPTIONS}
+        />
 
-        <div>
-          <label className="mb-1.5 block text-xs font-light text-white/60">
-            Course credit
-          </label>
-          <input
-            name="course_name"
-            defaultValue={registration?.course_name ?? ""}
-            placeholder="e.g. STAT 301"
-            className={inputClass}
-          />
-        </div>
+        <TextField
+          label="Course credit"
+          name="course_name"
+          defaultValue={registration?.course_name ?? ""}
+          placeholder="e.g. STAT 301"
+        />
 
-        <div>
-          <label className="mb-1.5 block text-xs font-light text-white/60">
-            Sign-up Source
-          </label>
-          <select
-            name="coming_from"
-            defaultValue={registration?.coming_from ?? ""}
-            className={inputClass}
-          >
-            <option value="" disabled className={optionClass}>
-              none
-            </option>
-            <option value="Mailman" className={optionClass}>
-              Mailman
-            </option>
-            <option value="Instagram" className={optionClass}>
-              Instagram
-            </option>
-            <option value="LinkedIn" className={optionClass}>
-              LinkedIn
-            </option>
-            <option value="Website" className={optionClass}>
-              Website
-            </option>
-            <option value="Website" className={optionClass}>
-              Word-of-Mouth
-            </option>
-          </select>
-        </div>
+        <SelectField
+          label="Sign-up Source"
+          name="coming_from"
+          defaultValue={registration?.coming_from ?? ""}
+          placeholder="none"
+          options={SOURCE_OPTIONS}
+        />
 
         {state.error && (
           <p className="text-sm font-light text-red-400">{state.error}</p>
         )}
 
         <div className="flex justify-end gap-3 pt-2">
-          <button
+          <Button
             type="button"
+            variant="secondary"
             onClick={() => setOpen(false)}
-            className="rounded-full border border-white/15 px-5 py-2.5 text-sm font-light text-white/70 transition-colors hover:bg-white/5 hover:text-white"
           >
             Cancel
-          </button>
-          <SubmitButton
-            label={mode === "edit" ? "Save changes" : "Add registration"}
-          />
+          </Button>
+          <SubmitButton pendingLabel="Saving…">
+            {mode === "edit" ? "Save changes" : "Add registration"}
+          </SubmitButton>
         </div>
       </form>
     </FormDialogShell>

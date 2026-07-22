@@ -48,8 +48,6 @@ export function LoginForm() {
       .eq("admin_id", data.user.id)
       .single();
 
-    console.log("admin lookup result:", { admin, adminError });
-
     if (!admin || !admin.is_active) {
       await supabase.auth.signOut();
       setError("This account doesn't have dashboard access.");

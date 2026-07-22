@@ -10,6 +10,8 @@ import {
   YAxis,
 } from "recharts";
 
+import { BRAND } from "@/lib/palette";
+
 interface RetentionGroup {
   total: number;
   attended: number;
@@ -66,7 +68,7 @@ export function CourseRetentionChart({
           formatter={(value) => [`${value}%`, "Attendance rate"]}
           cursor={{ fill: "rgba(255,255,255,0.04)" }}
         />
-        <Bar dataKey="rate" fill="#F86306" radius={[0, 4, 4, 0]}>
+        <Bar dataKey="rate" fill={BRAND} radius={[0, 4, 4, 0]}>
           <LabelList
             dataKey="rate"
             position="right"

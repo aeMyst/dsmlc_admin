@@ -9,6 +9,8 @@ import {
   YAxis,
 } from "recharts";
 
+import { BRAND } from "@/lib/palette";
+
 interface Props {
   data: { month: string; cumulativeMembers: number; newMembers: number }[];
 }
@@ -50,9 +52,9 @@ export function MemberGrowthChart({ data }: Props) {
         <Line
           type="monotone"
           dataKey="cumulativeMembers"
-          stroke="#F86306"
+          stroke={BRAND}
           strokeWidth={2}
-          dot={{ r: 3, fill: "#F86306" }}
+          dot={{ r: 3, fill: BRAND }}
         />
       </LineChart>
     </ResponsiveContainer>

@@ -2,11 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useRef, useState } from "react";
-import { useFormStatus } from "react-dom";
 import type React from "react";
 
 import { createEvent, type EventActionState } from "@/lib/actions/events";
 import { FormDialogShell } from "@/components/features/dashboard/forms/form-dialog-shell";
+import { Button, SubmitButton } from "@/components/ui/button";
+import { TextField, SelectField } from "@/components/ui/form-field";
 
 interface EventFormDialogProps {
   trigger: React.ReactNode;
@@ -14,23 +15,11 @@ interface EventFormDialogProps {
 
 const initialState: EventActionState = {};
 
-const inputClass =
-  "w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-white/40";
-
-const optionClass = "bg-white text-black";
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="rounded-full bg-white px-5 py-2.5 text-sm font-normal text-black transition-all hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-60"
-    >
-      {pending ? "Creating…" : "Create event"}
-    </button>
-  );
-}
+const CATEGORY_OPTIONS = [
+  { value: "Social", label: "Social" },
+  { value: "Workshop", label: "Workshop" },
+  { value: "Competition", label: "Competition" },
+];
 
 export function EventFormDialog({ trigger }: EventFormDialogProps) {
   const router = useRouter();
@@ -54,63 +43,32 @@ export function EventFormDialog({ trigger }: EventFormDialogProps) {
       title="Add event"
     >
       <form ref={formRef} action={formAction} className="space-y-4">
-        <div>
-          <label className="mb-1.5 block text-xs font-light text-white/60">
-            Event name
-          </label>
-          <input name="event_name" required className={inputClass} />
-        </div>
+        <TextField label="Event name" name="event_name" required />
 
-        <div>
-          <label className="mb-1.5 block text-xs font-light text-white/60">
-            Date
-          </label>
-          <input
-            name="event_date"
-            type="date"
-            required
-            className={inputClass}
-          />
-        </div>
+        <TextField label="Date" name="event_date" type="date" required />
 
-        <div>
-          <label className="mb-1.5 block text-xs font-light text-white/60">
-            Category
-          </label>
-          <select
-            name="event_type"
-            required
-            defaultValue=""
-            className={inputClass}
-          >
-            <option value="" disabled className={optionClass}>
-              Select a category
-            </option>
-            <option value="Social" className={optionClass}>
-              Social
-            </option>
-            <option value="Workshop" className={optionClass}>
-              Workshop
-            </option>
-            <option value="Competition" className={optionClass}>
-              Competition
-            </option>
-          </select>
-        </div>
+        <SelectField
+          label="Category"
+          name="event_type"
+          required
+          defaultValue=""
+          placeholder="Select a category"
+          options={CATEGORY_OPTIONS}
+        />
 
         {state.error && (
           <p className="text-sm font-light text-red-400">{state.error}</p>
         )}
 
         <div className="flex justify-end gap-3 pt-2">
-          <button
+          <Button
             type="button"
+            variant="secondary"
             onClick={() => setOpen(false)}
-            className="rounded-full border border-white/15 px-5 py-2.5 text-sm font-light text-white/70 transition-colors hover:bg-white/5 hover:text-white"
           >
             Cancel
-          </button>
-          <SubmitButton />
+          </Button>
+          <SubmitButton pendingLabel="Creating…">Create event</SubmitButton>
         </div>
       </form>
     </FormDialogShell>

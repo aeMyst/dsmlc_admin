@@ -1,7 +1,6 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useState } from "react";
-import { useFormStatus } from "react-dom";
 import type React from "react";
 
 import {
@@ -11,6 +10,8 @@ import {
 } from "@/lib/actions/members";
 import type { MemberRow } from "@/lib/queries/members";
 import { FormDialogShell } from "@/components/features/dashboard/forms/form-dialog-shell";
+import { Button, SubmitButton } from "@/components/ui/button";
+import { TextField, SelectField } from "@/components/ui/form-field";
 
 interface MemberFormDialogProps {
   mode: "create" | "edit";
@@ -20,23 +21,20 @@ interface MemberFormDialogProps {
 
 const initialState: ActionState = {};
 
-const inputClass =
-  "w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-white/40";
+const MAJOR_OPTIONS = [
+  { value: "Computer Science", label: "Computer Science" },
+  { value: "Data Science", label: "Data Science" },
+  { value: "Engineering", label: "Engineering" },
+  { value: "Mathematics", label: "Mathematics" },
+  { value: "Business", label: "Business" },
+  { value: "Arts", label: "Arts" },
+  { value: "Other", label: "Other" },
+];
 
-const optionClass = "bg-white text-black";
-
-function SubmitButton({ label }: { label: string }) {
-  const { pending } = useFormStatus();
-  return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="rounded-full bg-white px-5 py-2.5 text-sm font-normal text-black transition-all hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-60"
-    >
-      {pending ? "Saving…" : label}
-    </button>
-  );
-}
+const MEMBERSHIP_TYPE_OPTIONS = [
+  { value: "Standard", label: "Standard" },
+  { value: "Executive", label: "Executive" },
+];
 
 export function MemberFormDialog({
   mode,
@@ -75,116 +73,57 @@ export function MemberFormDialog({
         )}
 
         <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="mb-1.5 block text-xs font-light text-white/60">
-              First name
-            </label>
-            <input
-              name="first_name"
-              required
-              defaultValue={member?.first_name}
-              className={inputClass}
-            />
-          </div>
-          <div>
-            <label className="mb-1.5 block text-xs font-light text-white/60">
-              Last name
-            </label>
-            <input
-              name="last_name"
-              required
-              defaultValue={member?.last_name}
-              className={inputClass}
-            />
-          </div>
-        </div>
-
-        <div>
-          <label className="mb-1.5 block text-xs font-light text-white/60">
-            Email
-          </label>
-          <input
-            name="email"
-            type="email"
+          <TextField
+            label="First name"
+            name="first_name"
             required
-            defaultValue={member?.email}
-            className={inputClass}
+            defaultValue={member?.first_name}
+          />
+          <TextField
+            label="Last name"
+            name="last_name"
+            required
+            defaultValue={member?.last_name}
           />
         </div>
 
+        <TextField
+          label="Email"
+          name="email"
+          type="email"
+          required
+          defaultValue={member?.email}
+        />
+
         <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="mb-1.5 block text-xs font-light text-white/60">
-              Student ID
-            </label>
-            <input
-              name="student_id"
-              defaultValue={member?.student_id ?? ""}
-              className={inputClass}
-            />
-          </div>
-          <div>
-            <label className="mb-1.5 block text-xs font-light text-white/60">
-              Department
-            </label>
-            <select
-              name="major"
-              defaultValue={member?.major ?? ""}
-              className={inputClass}
-            >
-              <option value="" disabled className={optionClass}>
-                none
-              </option>
-              <option value="Computer Science" className={optionClass}>
-                Computer Science
-              </option>
-              <option value="Data Science" className={optionClass}>
-                Data Science
-              </option>
-              <option value="Engineering" className={optionClass}>
-                Engineering
-              </option>
-              <option value="Mathematics" className={optionClass}>
-                Mathematics
-              </option>
-              <option value="Business" className={optionClass}>
-                Business
-              </option>
-              <option value="Arts" className={optionClass}>
-                Arts
-              </option>
-              <option value="Other" className={optionClass}>
-                Other
-              </option>
-            </select>
-          </div>
+          <TextField
+            label="Student ID"
+            name="student_id"
+            defaultValue={member?.student_id ?? ""}
+          />
+          <SelectField
+            label="Department"
+            name="major"
+            defaultValue={member?.major ?? ""}
+            placeholder="none"
+            options={MAJOR_OPTIONS}
+          />
         </div>
 
-        <div>
-          <label className="mb-1.5 block text-xs font-light text-white/60">
-            Membership type
-          </label>
-          <select
-            name="membership_type"
-            required
-            defaultValue={member?.membership_type ?? "Standard"}
-            className={inputClass}
-          >
-            <option value="Standard" className={optionClass}>
-              Standard
-            </option>
-            <option value="Executive" className={optionClass}>
-              Executive
-            </option>
-          </select>
-        </div>
+        <SelectField
+          label="Membership type"
+          name="membership_type"
+          required
+          defaultValue={member?.membership_type ?? "Standard"}
+          options={MEMBERSHIP_TYPE_OPTIONS}
+        />
 
         <label className="flex items-center gap-2 text-sm font-light text-white/70">
           <input
             type="checkbox"
             name="mailing"
             defaultChecked={member?.mailing ?? false}
-            className="h-4 w-4 rounded border-white/30 bg-black/40 accent-[#F86306]"
+            className="h-4 w-4 rounded border-white/30 bg-black/40 accent-brand"
           />
           Subscribed to mailing list
         </label>
@@ -194,16 +133,16 @@ export function MemberFormDialog({
         )}
 
         <div className="flex justify-end gap-3 pt-2">
-          <button
+          <Button
             type="button"
+            variant="secondary"
             onClick={() => setOpen(false)}
-            className="rounded-full border border-white/15 px-5 py-2.5 text-sm font-light text-white/70 transition-colors hover:bg-white/5 hover:text-white"
           >
             Cancel
-          </button>
-          <SubmitButton
-            label={mode === "edit" ? "Save changes" : "Add member"}
-          />
+          </Button>
+          <SubmitButton pendingLabel="Saving…">
+            {mode === "edit" ? "Save changes" : "Add member"}
+          </SubmitButton>
         </div>
       </form>
     </FormDialogShell>

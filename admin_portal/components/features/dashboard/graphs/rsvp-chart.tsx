@@ -10,6 +10,8 @@ import {
   YAxis,
 } from "recharts";
 
+import { BRAND, BRAND_HOVER } from "@/lib/palette";
+
 interface Props {
   data: { label: string; rsvp: number; attended: number; atDoor?: number }[];
 }
@@ -44,13 +46,13 @@ export function RsvpTurnoutChart({ data }: Props) {
         <Bar
           dataKey="attended"
           name="Attended"
-          fill="#F86306"
+          fill={BRAND}
           radius={[4, 4, 0, 0]}
         />
         <Bar
           dataKey="atDoor"
           name="At-door"
-          fill="#FF914D"
+          fill={BRAND_HOVER}
           radius={[4, 4, 0, 0]}
         />
       </BarChart>

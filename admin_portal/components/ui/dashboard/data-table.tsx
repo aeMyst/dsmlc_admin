@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import type React from "react";
 
 import { PaginationControls } from "@/components/ui/pagination";
+import { SearchInput } from "@/components/ui/search-input";
 
 export interface DataTableColumn<T> {
   id: string;
@@ -75,12 +76,10 @@ export function DataTable<T>({
       {hasToolbar && (
         <div className="flex flex-wrap items-center gap-3">
           {search && (
-            <input
-              type="text"
-              placeholder={search.placeholder ?? "Search..."}
+            <SearchInput
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="w-64 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm text-white placeholder:text-white/30 outline-none focus:border-white/40"
+              onChange={setQuery}
+              placeholder={search.placeholder ?? "Search..."}
             />
           )}
 
@@ -93,8 +92,8 @@ export function DataTable<T>({
                   onClick={() => setCategory(cat)}
                   className={
                     cat === category
-                      ? "rounded-full bg-[#F86306] px-4 py-2 text-xs font-normal text-white"
-                      : "rounded-full border border-white/15 px-4 py-2 text-xs font-light text-white/70 transition-colors hover:bg-white/5 hover:text-white"
+                      ? "min-h-[40px] rounded-full bg-brand px-4 py-2 text-xs font-normal text-white"
+                      : "min-h-[40px] rounded-full border border-white/15 px-4 py-2 text-xs font-light text-white/70 transition-colors hover:bg-white/5 hover:text-white"
                   }
                 >
                   {cat}

@@ -5,6 +5,7 @@ import {
   type DataTableColumn,
 } from "@/components/ui/dashboard/data-table";
 import { MemberFormDialog } from "@/components/features/dashboard/forms/member-form-dialog";
+import { TriggerLabel } from "@/components/ui/button";
 import type { MemberRow } from "@/lib/queries/members";
 
 const columns: DataTableColumn<MemberRow>[] = [
@@ -54,9 +55,9 @@ const columns: DataTableColumn<MemberRow>[] = [
         mode="edit"
         member={member}
         trigger={
-          <span className="cursor-pointer rounded-full border border-white/15 px-3 py-1.5 text-xs text-white/70 transition-colors hover:bg-white/5 hover:text-white">
+          <TriggerLabel variant="secondary" className="px-4 py-1.5 text-xs">
             Edit
-          </span>
+          </TriggerLabel>
         }
       />
     ),

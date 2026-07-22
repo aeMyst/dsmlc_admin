@@ -9,6 +9,8 @@ import {
   YAxis,
 } from "recharts";
 
+import { BRAND } from "@/lib/palette";
+
 interface Props {
   data: { date: string; attended: number; label: string }[];
 }
@@ -47,9 +49,9 @@ export function AttendanceLineChart({ data }: Props) {
         <Line
           type="monotone"
           dataKey="attended"
-          stroke="#F86306"
+          stroke={BRAND}
           strokeWidth={2}
-          dot={{ r: 3, fill: "#F86306" }}
+          dot={{ r: 3, fill: BRAND }}
         />
       </LineChart>
     </ResponsiveContainer>

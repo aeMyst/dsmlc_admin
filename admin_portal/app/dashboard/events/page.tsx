@@ -2,6 +2,7 @@ import { getEventsWithStats } from "@/lib/queries/events";
 import { EventsTable } from "@/components/features/dashboard/tables/events-table";
 import { EventFormDialog } from "@/components/features/dashboard/forms/event-form-dialog";
 import { CategoryBreakdown } from "@/components/features/dashboard/graphs/category-breakdown";
+import { TriggerLabel } from "@/components/ui/button";
 
 export default async function EventsPage() {
   const events = await getEventsWithStats();
@@ -25,11 +26,7 @@ export default async function EventsPage() {
     <div className="space-y-6">
       <div className="flex justify-end">
         <EventFormDialog
-          trigger={
-            <span className="cursor-pointer rounded-full bg-[#F86306] px-5 py-2.5 text-sm font-normal text-white transition-colors hover:bg-[#FF914D]">
-              + Add event
-            </span>
-          }
+          trigger={<TriggerLabel variant="primary">+ Add event</TriggerLabel>}
         />
       </div>
 

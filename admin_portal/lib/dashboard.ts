@@ -23,26 +23,12 @@ function round(value: number, decimals = 0) {
   return Math.round(value * factor) / factor
 }
 
-/** Q1 — Who attended a given event */
-export async function getEventAttendees(eventId: string) {
-  return mockRegistrations
-    .filter((r) => r.event_id === eventId)
-    .map((r) => ({ ...r, people: findPerson(r.people_id) }))
-}
-
-/** Q2 — Feedback for a given event (anonymous — no attendee link) */
 export async function getEventFeedback(eventId: string) {
   return mockFeedback
     .filter((f) => f.event_id === eventId)
     .sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
 }
 
-/** All events, most recent first */
-export async function getEvents() {
-  return [...mockEvents].sort((a, b) => (a.event_date < b.event_date ? 1 : -1))
-}
-
-/** Events enriched with RSVP/attended/turnout/rating — powers the Events table */
 export async function getEventsWithStats() {
   const events = [...mockEvents].sort((a, b) => (a.event_date < b.event_date ? 1 : -1))
 
@@ -64,7 +50,6 @@ export async function getEventsWithStats() {
   })
 }
 
-/** Top-level KPI cards for the Overview page */
 export async function getOverviewStats() {
   const eventsWithStats = await getEventsWithStats()
 
@@ -83,7 +68,6 @@ export async function getOverviewStats() {
   return { totalEvents, totalAttendees, avgTurnoutRate, avgRating }
 }
 
-/** Attendance over time — one point per event, in date order */
 export async function getAttendanceOverTime() {
   const eventsWithStats = await getEventsWithStats()
   return [...eventsWithStats]
@@ -91,7 +75,6 @@ export async function getAttendanceOverTime() {
     .map((e) => ({ date: e.event_date, attended: e.attended, label: e.event_name }))
 }
 
-/** RSVP vs Attended per event, in date order — powers the grouped bar chart */
 export async function getRsvpVsAttendedSeries() {
   const eventsWithStats = await getEventsWithStats()
   return [...eventsWithStats]
@@ -99,29 +82,6 @@ export async function getRsvpVsAttendedSeries() {
     .map((e) => ({ date: e.event_date, rsvp: e.rsvp, attended: e.attended }))
 }
 
-/** RSVP vs Attended for a single event — powers the Event Detail chart */
-export async function getEventRsvpVsAttended(eventId: string) {
-  const registrations = mockRegistrations.filter((r) => r.event_id === eventId)
-  const attended = registrations.filter((r) => r.status === "attended").length
-  return { rsvp: registrations.length, attended }
-}
-
-/** Events grouped by category — count + share of total events */
-export async function getCategoryBreakdown() {
-  const total = mockEvents.length
-  const counts = new Map<string, number>()
-  for (const event of mockEvents) {
-    counts.set(event.event_type, (counts.get(event.event_type) ?? 0) + 1)
-  }
-
-  return Array.from(counts, ([category, count]) => ({
-    category,
-    count,
-    percent: total > 0 ? round((count / total) * 100) : 0,
-  })).sort((a, b) => b.count - a.count)
-}
-
-/** Average feedback rating grouped by event category */
 export async function getCategoryRatings() {
   const sums = new Map<string, { total: number; count: number }>()
 
@@ -140,19 +100,6 @@ export async function getCategoryRatings() {
   })).sort((a, b) => b.avgRating - a.avgRating)
 }
 
-/** Q3 — Students attending for course-collaboration bonus marks */
-export async function getCourseCreditAttendance() {
-  return mockRegistrations
-    .filter((r) => r.course_name !== null)
-    .map((r) => ({
-      ...r,
-      people: findPerson(r.people_id),
-      events: findEvent(r.event_id),
-    }))
-    .sort((a, b) => (a.registered_at < b.registered_at ? 1 : -1))
-}
-
-/** Q4/5 — Sign-up source breakdown (Instagram, LinkedIn, other, ...) */
 export async function getSignupSourceBreakdown() {
   const counts = new Map<string, number>()
   for (const row of mockRegistrations) {
@@ -163,39 +110,4 @@ export async function getSignupSourceBreakdown() {
   return Array.from(counts, ([source, count]) => ({ source, count })).sort(
     (a, b) => b.count - a.count
   )
-}
-
-/** Q5 — Mailing list size */
-export async function getMailingListStats() {
-  const total = mockMemberships.length
-  const subscribed = mockMemberships.filter((m) => m.mailing).length
-  return { total, subscribed }
-}
-
-/** Q6 — Registration trends over time, bucketed by month */
-export async function getRegistrationTrends() {
-  const buckets = new Map<string, number>()
-  for (const row of mockRegistrations) {
-    const month = row.registered_at.slice(0, 7)
-    buckets.set(month, (buckets.get(month) ?? 0) + 1)
-  }
-
-  return Array.from(buckets, ([month, registrations]) => ({ month, registrations })).sort(
-    (a, b) => (a.month < b.month ? -1 : 1)
-  )
-}
-
-/** Q7 — Rows for the export page; filters applied by the caller */
-export async function getExportableRegistrations(filters?: {
-  eventId?: string
-  courseOnly?: boolean
-}) {
-  return mockRegistrations
-    .filter((r) => (filters?.eventId ? r.event_id === filters.eventId : true))
-    .filter((r) => (filters?.courseOnly ? r.course_name !== null : true))
-    .map((r) => ({
-      ...r,
-      people: findPerson(r.people_id),
-      events: findEvent(r.event_id),
-    }))
 }

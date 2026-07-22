@@ -3,6 +3,8 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { SearchInput } from "@/components/ui/search-input";
+
 export function PeopleSearchInput() {
   const router = useRouter();
   const pathname = usePathname();
@@ -25,12 +27,10 @@ export function PeopleSearchInput() {
   }, [value]);
 
   return (
-    <input
-      type="text"
-      placeholder="Search people..."
+    <SearchInput
       value={value}
-      onChange={(e) => setValue(e.target.value)}
-      className="w-64 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm text-white placeholder:text-white/30 outline-none focus:border-white/40"
+      onChange={setValue}
+      placeholder="Search people..."
     />
   );
 }

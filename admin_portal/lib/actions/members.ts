@@ -3,11 +3,9 @@
 import { revalidatePath } from "next/cache"
 
 import { createClient } from "@/lib/supabase/server"
+import type { ActionState } from "@/lib/actions/types"
 
-export interface ActionState {
-  error?: string
-  success?: boolean
-}
+export type { ActionState }
 
 function getNextSeptemberFourth(from: Date = new Date()): string {
   const year = from.getUTCFullYear()

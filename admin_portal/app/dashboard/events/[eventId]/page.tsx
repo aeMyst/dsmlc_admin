@@ -16,8 +16,9 @@ import { RsvpTurnoutChart } from "@/components/features/dashboard/graphs/rsvp-ch
 import { CourseRetentionChart } from "@/components/features/dashboard/graphs/course-retention-chart";
 import { RegistrationFormDialog } from "@/components/features/dashboard/forms/registration-form-dialog";
 import { EventCourseExportButton } from "@/components/features/dashboard/event-course-button";
-import { PaginationControls } from "@/components/ui/pagination";
 import { CopyableId } from "@/components/ui/dashboard/event-id";
+import { RegistrationsTable } from "@/components/features/dashboard/tables/registrations-table";
+import { TriggerLabel } from "@/components/ui/button";
 
 interface PageProps {
   params: Promise<{ eventId: string }>;
@@ -117,7 +118,7 @@ export default async function EventDetailPage({
                 className="border-b border-white/5 pb-4 last:border-0 last:pb-0"
               >
                 <div className="mb-1 flex items-center gap-2 text-sm text-white">
-                  <span className="text-[#FF914D]">★</span>
+                  <span className="text-brand">★</span>
                   {f.rating}
                 </div>
                 {f.comment && (
@@ -164,90 +165,24 @@ export default async function EventDetailPage({
               mode="create"
               eventId={event.event_id}
               trigger={
-                <span className="flex cursor-pointer items-center justify-center rounded-full bg-[#F86306] px-5 py-2.5 text-sm font-normal text-white transition-colors hover:bg-[#FF914D] sm:inline-flex">
+                <TriggerLabel variant="primary">
                   + Add registration
-                </span>
+                </TriggerLabel>
               }
             />
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5">
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[640px] text-left text-sm">
-              <thead>
-                <tr className="border-b border-white/10 text-white/50">
-                  <th scope="col" className="px-6 py-3 font-light">
-                    Name
-                  </th>
-                  <th scope="col" className="px-6 py-3 font-light">
-                    Email
-                  </th>
-                  <th scope="col" className="px-6 py-3 font-light">
-                    Status
-                  </th>
-                  <th scope="col" className="px-6 py-3 font-light">
-                    Course credit
-                  </th>
-                  <th scope="col" className="px-6 py-3 font-light">
-                    Source
-                  </th>
-                  <th scope="col" className="px-6 py-3 font-light" />
-                </tr>
-              </thead>
-              <tbody>
-                {registrationsPage.registrations.map((r) => (
-                  <tr
-                    key={r.registration_id}
-                    className="border-b border-white/5 text-white/80 last:border-0"
-                  >
-                    <td className="px-6 py-4">
-                      {r.first_name} {r.last_name}
-                    </td>
-                    <td className="px-6 py-4 text-white/50">{r.email}</td>
-                    <td className="px-6 py-4 text-white/50 capitalize">
-                      {r.status.replace("-", " ")}
-                    </td>
-                    <td className="px-6 py-4 text-white/50">
-                      {r.course_name ?? "—"}
-                    </td>
-                    <td className="px-6 py-4 text-white/50">
-                      {r.coming_from ?? "—"}
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <RegistrationFormDialog
-                        mode="edit"
-                        eventId={event.event_id}
-                        registration={r}
-                        trigger={
-                          <span className="inline-flex min-h-[36px] cursor-pointer items-center rounded-full border border-white/15 px-4 py-2 text-xs text-white/70 transition-colors hover:bg-white/5 hover:text-white">
-                            Edit
-                          </span>
-                        }
-                      />
-                    </td>
-                  </tr>
-                ))}
-                {registrationsPage.registrations.length === 0 && (
-                  <tr>
-                    <td
-                      colSpan={6}
-                      className="px-6 py-8 text-center text-white/40"
-                    >
-                      No registrations yet.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          <PaginationControls
-            currentPage={registrationsPage.page}
-            totalPages={registrationsPage.totalPages}
-            basePath={`/dashboard/events/${event.event_id}`}
-          />
-        </div>
+        {/* RegistrationsTable is a Client Component that owns its own
+            columns/getRowKey definitions — this page only ever hands it
+            plain, serializable data (the registrations array + two
+            numbers), never functions. */}
+        <RegistrationsTable
+          eventId={event.event_id}
+          registrations={registrationsPage.registrations}
+          currentPage={registrationsPage.page}
+          totalPages={registrationsPage.totalPages}
+        />
       </div>
     </div>
   );
