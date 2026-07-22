@@ -3,11 +3,8 @@
 import { useActionState, useEffect, useRef, useState } from "react";
 import type React from "react";
 
-import {
-  createMember,
-  updateMember,
-  type ActionState,
-} from "@/lib/actions/members";
+import { createMember, updateMember } from "@/lib/actions/members";
+import type { ActionState } from "@/lib/actions/types";
 import type { MemberRow } from "@/lib/queries/members";
 import { FormDialogShell } from "@/components/features/dashboard/forms/form-dialog-shell";
 import { Button, SubmitButton } from "@/components/ui/button";

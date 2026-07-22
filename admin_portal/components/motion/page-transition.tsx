@@ -8,11 +8,6 @@ interface PageTransitionProps {
   children: React.ReactNode;
 }
 
-/**
- * Wraps route content so each dashboard page fades/slides in on navigation.
- * `mode="wait"` means the outgoing page finishes exiting before the new one
- * enters, which avoids layout jumps between differently-sized pages.
- */
 export function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname();
   const shouldReduceMotion = useReducedMotion();

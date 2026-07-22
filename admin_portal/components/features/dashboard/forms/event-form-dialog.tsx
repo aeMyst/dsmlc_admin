@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useRef, useState } from "react";
 import type React from "react";
 
-import { createEvent, type EventActionState } from "@/lib/actions/events";
+import { createEvent } from "@/lib/actions/events";
+import type { EventActionState } from "@/lib/actions/types";
 import { FormDialogShell } from "@/components/features/dashboard/forms/form-dialog-shell";
 import { Button, SubmitButton } from "@/components/ui/button";
 import { TextField, SelectField } from "@/components/ui/form-field";

@@ -6,8 +6,8 @@ import type React from "react";
 import {
   createRegistration,
   updateRegistration,
-  type ActionState,
 } from "@/lib/actions/registrations";
+import type { ActionState } from "@/lib/actions/types";
 import type { RegistrationRow } from "@/lib/queries/registrations";
 import { FormDialogShell } from "@/components/features/dashboard/forms/form-dialog-shell";
 import { Button, SubmitButton } from "@/components/ui/button";
@@ -34,7 +34,6 @@ const SOURCE_OPTIONS = [
   { value: "LinkedIn", label: "LinkedIn" },
   { value: "Website", label: "Website" },
   { value: "Word-of-Mouth", label: "Word-of-Mouth" },
-  { value: "I'd rather not say", label: "I'd rather not say" },
 ];
 
 export function RegistrationFormDialog({
@@ -116,7 +115,7 @@ export function RegistrationFormDialog({
           label="Sign-up Source"
           name="coming_from"
           defaultValue={registration?.coming_from ?? ""}
-          placeholder="no selection"
+          placeholder="none"
           options={SOURCE_OPTIONS}
         />
 

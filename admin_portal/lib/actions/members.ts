@@ -5,8 +5,6 @@ import { revalidatePath } from "next/cache"
 import { createClient } from "@/lib/supabase/server"
 import type { ActionState } from "@/lib/actions/types"
 
-export type { ActionState }
-
 function getNextSeptemberFourth(from: Date = new Date()): string {
   const year = from.getUTCFullYear()
   const septFourthThisYear = Date.UTC(year, 8, 4) // month is 0-indexed: 8 = September

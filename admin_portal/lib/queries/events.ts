@@ -12,8 +12,6 @@ export interface EventWithStats {
   avgRating: number | null
 }
 
-// "attended" = pre-registered and showed up. "at-door" = showed up without
-// pre-registering. Both count as a real attendee for turnout purposes.
 function isAttendedStatus(status: string) {
   return status === "attended" || status === "at-door"
 }
@@ -34,8 +32,6 @@ export async function getEventsWithStats(): Promise<EventWithStats[]> {
   return events.map((event) => {
     const eventRegs = (registrations ?? []).filter((r) => r.event_id === event.event_id)
 
-    // Walk-ins never RSVP'd, so they're excluded from the RSVP count entirely
-    // and tracked as their own bucket instead.
     const atDoor = eventRegs.filter((r) => r.status === "at-door").length
     const attendedFromRsvp = eventRegs.filter((r) => r.status === "attended").length
     const attended = attendedFromRsvp + atDoor
@@ -52,8 +48,6 @@ export async function getEventsWithStats(): Promise<EventWithStats[]> {
       rsvp,
       attended,
       atDoor,
-      // Turnout rate is purely "did the people who RSVP'd show up" —
-      // walk-ins don't factor in, since they were never expected.
       turnoutRate: rsvp > 0 ? Math.round((attendedFromRsvp / rsvp) * 100) : 0,
       avgRating,
     }
