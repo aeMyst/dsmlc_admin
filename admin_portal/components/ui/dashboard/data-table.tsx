@@ -6,12 +6,14 @@ import type React from "react";
 
 import { PaginationControls } from "@/components/ui/pagination";
 import { SearchInput } from "@/components/ui/search-input";
+import { cn } from "@/lib/utils";
 
 export interface DataTableColumn<T> {
   id: string;
   header: string;
   render: (row: T) => React.ReactNode;
   className?: string;
+  width?: string;
 }
 
 interface DataTableSearchConfig<T> {
@@ -108,11 +110,26 @@ export function DataTable<T>({
 
       <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm" style={{ minWidth }}>
+          <table
+            className="w-full table-fixed text-left text-sm"
+            style={{ minWidth }}
+          >
+            <colgroup>
+              {columns.map((col) => (
+                <col
+                  key={col.id}
+                  style={col.width ? { width: col.width } : undefined}
+                />
+              ))}
+            </colgroup>
             <thead>
               <tr className="border-b border-white/10 text-white/50">
                 {columns.map((col) => (
-                  <th key={col.id} scope="col" className="px-6 py-3 font-light">
+                  <th
+                    key={col.id}
+                    scope="col"
+                    className="truncate px-6 py-3 font-light"
+                  >
                     {col.header}
                   </th>
                 ))}
@@ -120,22 +137,23 @@ export function DataTable<T>({
             </thead>
             <tbody>
               <AnimatePresence initial={false}>
-                {filtered.map((row, index) => (
+                {filtered.map((row) => (
                   <motion.tr
                     key={getRowKey(row)}
-                    layout={!shouldReduceMotion}
-                    initial={shouldReduceMotion ? false : { opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={shouldReduceMotion ? false : { opacity: 0 }}
+                    animate={{ opacity: 1 }}
                     exit={shouldReduceMotion ? undefined : { opacity: 0 }}
-                    transition={{
-                      duration: 0.25,
-                      delay: Math.min(index, 8) * 0.02,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
+                    transition={{ duration: 0.12 }}
                     className="border-b border-white/5 text-white/80 last:border-0"
                   >
                     {columns.map((col) => (
-                      <td key={col.id} className={col.className ?? "px-6 py-4"}>
+                      <td
+                        key={col.id}
+                        className={cn(
+                          "overflow-hidden text-ellipsis whitespace-nowrap px-6 py-4",
+                          col.className,
+                        )}
+                      >
                         {col.render(row)}
                       </td>
                     ))}

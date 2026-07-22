@@ -25,35 +25,41 @@ export function RegistrationsTable({
     {
       id: "name",
       header: "Name",
+      width: "20%",
       render: (r) => `${r.first_name} ${r.last_name}`,
     },
     {
       id: "email",
       header: "Email",
+      width: "26%",
       render: (r) => r.email,
       className: "px-6 py-4 text-white/50",
     },
     {
       id: "status",
       header: "Status",
+      width: "14%",
       render: (r) => r.status.replace("-", " "),
       className: "px-6 py-4 text-white/50 capitalize",
     },
     {
       id: "course_credit",
       header: "Course credit",
+      width: "16%",
       render: (r) => r.course_name ?? "—",
       className: "px-6 py-4 text-white/50",
     },
     {
       id: "source",
       header: "Source",
+      width: "14%",
       render: (r) => r.coming_from ?? "—",
       className: "px-6 py-4 text-white/50",
     },
     {
       id: "actions",
       header: "",
+      width: "10%",
       render: (r) => (
         <RegistrationFormDialog
           mode="edit"

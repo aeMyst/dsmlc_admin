@@ -10,23 +10,27 @@ const columns: DataTableColumn<PersonRow>[] = [
   {
     id: "name",
     header: "Name",
+    width: "26%",
     render: (person) => `${person.first_name} ${person.last_name}`,
   },
   {
     id: "email",
     header: "Email",
+    width: "32%",
     render: (person) => person.email,
     className: "px-6 py-4 text-white/50",
   },
   {
     id: "student_id",
     header: "Student ID",
+    width: "20%",
     render: (person) => person.student_id ?? "—",
     className: "px-6 py-4 text-white/50",
   },
   {
     id: "major",
     header: "Major",
+    width: "22%",
     render: (person) => person.major ?? "—",
     className: "px-6 py-4 text-white/50",
   },

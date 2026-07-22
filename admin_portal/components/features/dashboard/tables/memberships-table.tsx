@@ -12,29 +12,34 @@ const columns: DataTableColumn<MemberRow>[] = [
   {
     id: "name",
     header: "Name",
+    width: "20%",
     render: (member) => `${member.first_name} ${member.last_name}`,
   },
   {
     id: "email",
     header: "Email",
+    width: "26%",
     render: (member) => member.email,
     className: "px-6 py-4 text-white/50",
   },
   {
     id: "student_id",
     header: "Student ID",
+    width: "14%",
     render: (member) => member.student_id ?? "—",
     className: "px-6 py-4 text-white/50",
   },
   {
     id: "type",
     header: "Type",
+    width: "12%",
     render: (member) => member.membership_type,
     className: "px-6 py-4 text-white/50",
   },
   {
     id: "mailing",
     header: "Mailing",
+    width: "16%",
     render: (member) => (
       <span
         className={
@@ -50,6 +55,7 @@ const columns: DataTableColumn<MemberRow>[] = [
   {
     id: "actions",
     header: "",
+    width: "12%",
     render: (member) => (
       <MemberFormDialog
         mode="edit"

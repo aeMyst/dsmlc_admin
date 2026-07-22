@@ -26,6 +26,7 @@ const columns: DataTableColumn<EventRow>[] = [
   {
     id: "event",
     header: "Event",
+    width: "26%",
     render: (event) => (
       <Link
         href={`/dashboard/events/${event.event_id}`}
@@ -38,6 +39,7 @@ const columns: DataTableColumn<EventRow>[] = [
   {
     id: "category",
     header: "Category",
+    width: "14%",
     render: (event) => (
       <span className="rounded-full border border-white/15 px-2.5 py-1 text-xs text-white/70">
         {event.event_type}
@@ -47,6 +49,7 @@ const columns: DataTableColumn<EventRow>[] = [
   {
     id: "date",
     header: "Date",
+    width: "12%",
     render: (event) =>
       new Date(event.event_date).toLocaleDateString(undefined, {
         month: "short",
@@ -57,6 +60,7 @@ const columns: DataTableColumn<EventRow>[] = [
   {
     id: "rsvp_atdoor_att",
     header: "RSVP / At-door / ATT.",
+    width: "20%",
     render: (event) =>
       `${event.rsvp} / ${event.atDoor ?? 0} / ${event.attended}`,
     className: "px-6 py-4 text-white/50",
@@ -64,12 +68,14 @@ const columns: DataTableColumn<EventRow>[] = [
   {
     id: "turnout",
     header: "Turnout",
+    width: "14%",
     render: (event) => `${event.turnoutRate}%`,
     className: "px-6 py-4 text-white/50",
   },
   {
     id: "rating",
     header: "Rating",
+    width: "14%",
     render: (event) =>
       event.avgRating !== null ? `★ ${event.avgRating}` : "—",
     className: "px-6 py-4 text-white/50",
