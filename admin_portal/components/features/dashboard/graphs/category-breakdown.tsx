@@ -1,3 +1,7 @@
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
+
 import { colorForIndex } from "@/lib/palette";
 
 interface BreakdownItem {
@@ -12,6 +16,8 @@ interface CategoryBreakdownProps {
 }
 
 export function CategoryBreakdown({ title, items }: CategoryBreakdownProps) {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
       <h2 className="mb-5 text-sm font-light text-white/70">{title}</h2>
@@ -23,11 +29,15 @@ export function CategoryBreakdown({ title, items }: CategoryBreakdownProps) {
               <span className="font-light text-white/50">{item.display}</span>
             </div>
             <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-              <div
+              <motion.div
                 className="h-full rounded-full"
-                style={{
-                  width: `${item.percent}%`,
-                  backgroundColor: colorForIndex(index),
+                style={{ backgroundColor: colorForIndex(index) }}
+                initial={shouldReduceMotion ? false : { width: 0 }}
+                animate={{ width: `${item.percent}%` }}
+                transition={{
+                  duration: 0.6,
+                  delay: Math.min(index, 6) * 0.06,
+                  ease: [0.16, 1, 0.3, 1],
                 }}
               />
             </div>

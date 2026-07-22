@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import { useFormStatus } from "react-dom";
 import type React from "react";
 
@@ -18,7 +19,21 @@ const VARIANTS: Record<ButtonVariant, string> = {
     "gap-2 border border-white/15 font-light text-white/70 hover:border-white/30 hover:text-white",
 };
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+// framer-motion's HTMLMotionProps re-types a handful of event handlers
+// (drag/animation events) to its own gesture types, which collide with the
+// plain React typings on ButtonHTMLAttributes. Omitting them here keeps
+// <Button> a drop-in replacement everywhere it's already used, since none of
+// those props are used in this app.
+type OmittedForMotion =
+  | "onDrag"
+  | "onDragStart"
+  | "onDragEnd"
+  | "onAnimationStart"
+  | "onAnimationEnd"
+  | "onAnimationIteration";
+
+interface ButtonProps
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, OmittedForMotion> {
   variant?: ButtonVariant;
 }
 
@@ -27,8 +42,16 @@ export function Button({
   className,
   ...props
 }: ButtonProps) {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
-    <button className={cn(BASE, VARIANTS[variant], className)} {...props} />
+    <motion.button
+      whileHover={shouldReduceMotion ? undefined : { scale: 1.02 }}
+      whileTap={shouldReduceMotion ? undefined : { scale: 0.96 }}
+      transition={{ duration: 0.15, ease: "easeOut" }}
+      className={cn(BASE, VARIANTS[variant], className)}
+      {...props}
+    />
   );
 }
 
@@ -43,8 +66,17 @@ export function TriggerLabel({
   className,
   children,
 }: TriggerLabelProps) {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
-    <span className={cn(BASE, VARIANTS[variant], className)}>{children}</span>
+    <motion.span
+      whileHover={shouldReduceMotion ? undefined : { scale: 1.02 }}
+      whileTap={shouldReduceMotion ? undefined : { scale: 0.96 }}
+      transition={{ duration: 0.15, ease: "easeOut" }}
+      className={cn(BASE, VARIANTS[variant], className)}
+    >
+      {children}
+    </motion.span>
   );
 }
 

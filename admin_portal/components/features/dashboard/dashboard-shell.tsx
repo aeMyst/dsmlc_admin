@@ -7,6 +7,7 @@ import { MobileNav } from "@/components/features/dashboard/mobile-nav";
 import { AccountFooter } from "@/components/features/dashboard/navbar-footer";
 import { getCurrentAdmin } from "@/lib/queries/admin-profile";
 import { TopBarTitle } from "@/components/features/dashboard/header";
+import { PageTransition } from "@/components/motion/page-transition";
 
 interface DashboardShellProps {
   children: React.ReactNode;
@@ -37,7 +38,7 @@ export async function DashboardShell({ children }: DashboardShellProps) {
             </div>
           </div>
 
-          <SidebarNav />
+          <SidebarNav instanceId="desktop" />
         </div>
 
         <AccountFooter
@@ -72,7 +73,9 @@ export async function DashboardShell({ children }: DashboardShellProps) {
           <TopBarTitle />
         </div>
 
-        <main className="flex-1 overflow-x-hidden p-4 md:p-8">{children}</main>
+        <main className="flex-1 overflow-x-hidden p-4 md:p-8">
+          <PageTransition>{children}</PageTransition>
+        </main>
       </div>
     </div>
   );

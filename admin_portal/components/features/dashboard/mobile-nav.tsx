@@ -99,7 +99,7 @@ export function MobileNav({ admin }: MobileNavProps) {
               </button>
             </div>
 
-            <SidebarNav />
+            <SidebarNav instanceId="mobile" />
           </div>
 
           <AccountFooter

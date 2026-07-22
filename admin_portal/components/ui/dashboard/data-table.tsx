@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useMemo, useState } from "react";
 import type React from "react";
 
@@ -52,6 +53,7 @@ export function DataTable<T>({
 }: DataTableProps<T>) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
+  const shouldReduceMotion = useReducedMotion();
 
   const categories = useMemo(() => {
     if (!categoryFilter) return [];
@@ -117,18 +119,29 @@ export function DataTable<T>({
               </tr>
             </thead>
             <tbody>
-              {filtered.map((row) => (
-                <tr
-                  key={getRowKey(row)}
-                  className="border-b border-white/5 text-white/80 last:border-0"
-                >
-                  {columns.map((col) => (
-                    <td key={col.id} className={col.className ?? "px-6 py-4"}>
-                      {col.render(row)}
-                    </td>
-                  ))}
-                </tr>
-              ))}
+              <AnimatePresence initial={false}>
+                {filtered.map((row, index) => (
+                  <motion.tr
+                    key={getRowKey(row)}
+                    layout={!shouldReduceMotion}
+                    initial={shouldReduceMotion ? false : { opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={shouldReduceMotion ? undefined : { opacity: 0 }}
+                    transition={{
+                      duration: 0.25,
+                      delay: Math.min(index, 8) * 0.02,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                    className="border-b border-white/5 text-white/80 last:border-0"
+                  >
+                    {columns.map((col) => (
+                      <td key={col.id} className={col.className ?? "px-6 py-4"}>
+                        {col.render(row)}
+                      </td>
+                    ))}
+                  </motion.tr>
+                ))}
+              </AnimatePresence>
               {filtered.length === 0 && (
                 <tr>
                   <td
