@@ -19,17 +19,26 @@ export interface PaginatedPeople {
   totalPages: number
 }
 
-export async function getPeoplePaginated(page: number): Promise<PaginatedPeople> {
+export async function getPeoplePaginated(page: number, query?: string): Promise<PaginatedPeople> {
   const supabase = await createClient()
   const safePage = Math.max(1, page)
   const from = (safePage - 1) * PAGE_SIZE
   const to = from + PAGE_SIZE - 1
 
-  const { data, count, error } = await supabase
+  let request = supabase
     .from("PEOPLE")
     .select("people_id, first_name, last_name, email, student_id, major", { count: "exact" })
-    .order("last_name", { ascending: true })
-    .range(from, to)
+
+  const trimmedQuery = query?.trim()
+  if (trimmedQuery) {
+    const words = trimmedQuery.split(/\s+/).filter(Boolean)
+    for (const word of words) {
+      const escaped = word.replace(/[%_]/g, "\\$&")
+      request = request.or(`first_name.ilike.%${escaped}%,last_name.ilike.%${escaped}%,email.ilike.%${escaped}%`)
+    }
+  }
+
+  const { data, count, error } = await request.order("last_name", { ascending: true }).range(from, to)
 
   if (error || !data) {
     return { people: [], totalCount: 0, page: safePage, pageSize: PAGE_SIZE, totalPages: 0 }

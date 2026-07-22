@@ -1,6 +1,3 @@
-// TEMPORARY: mock data for the stat cards/charts below — see note in
-// lib/mock/dashboard.ts. Member Growth pulls from real Supabase data
-// already, since it needs real MEMBERSHIP rows to mean anything.
 import {
   getOverviewStats,
   getAttendanceOverTime,

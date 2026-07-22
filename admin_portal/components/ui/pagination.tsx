@@ -4,22 +4,30 @@ interface PaginationControlsProps {
   currentPage: number;
   totalPages: number;
   basePath: string;
+  extraParams?: Record<string, string>;
 }
 
 export function PaginationControls({
   currentPage,
   totalPages,
   basePath,
+  extraParams,
 }: PaginationControlsProps) {
   if (totalPages <= 1) return null;
 
   const prevPage = Math.max(1, currentPage - 1);
   const nextPage = Math.min(totalPages, currentPage + 1);
 
+  function buildHref(page: number) {
+    const params = new URLSearchParams(extraParams);
+    params.set("page", String(page));
+    return `${basePath}?${params.toString()}`;
+  }
+
   return (
     <div className="flex items-center justify-between border-t border-white/10 px-6 py-3">
       <Link
-        href={`${basePath}?page=${prevPage}`}
+        href={buildHref(prevPage)}
         aria-disabled={currentPage === 1}
         className={
           currentPage === 1
@@ -35,7 +43,7 @@ export function PaginationControls({
       </span>
 
       <Link
-        href={`${basePath}?page=${nextPage}`}
+        href={buildHref(nextPage)}
         aria-disabled={currentPage === totalPages}
         className={
           currentPage === totalPages

@@ -25,6 +25,7 @@ interface DataTablePaginationConfig {
   currentPage: number;
   totalPages: number;
   basePath: string;
+  extraParams?: Record<string, string>;
 }
 
 interface DataTableProps<T> {
@@ -148,6 +149,7 @@ export function DataTable<T>({
             currentPage={pagination.currentPage}
             totalPages={pagination.totalPages}
             basePath={pagination.basePath}
+            extraParams={pagination.extraParams}
           />
         )}
       </div>

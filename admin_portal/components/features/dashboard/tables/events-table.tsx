@@ -4,7 +4,7 @@ import Link from "next/link";
 import {
   DataTable,
   type DataTableColumn,
-} from "@/components/features/dashboard/data-table";
+} from "@/components/ui/dashboard/data-table";
 
 interface EventRow {
   event_id: string;

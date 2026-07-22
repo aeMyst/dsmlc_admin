@@ -3,7 +3,7 @@
 import {
   DataTable,
   type DataTableColumn,
-} from "@/components/features/dashboard/data-table";
+} from "@/components/ui/dashboard/data-table";
 import type { PersonRow } from "@/lib/queries/people";
 
 const columns: DataTableColumn<PersonRow>[] = [
@@ -36,12 +36,14 @@ interface PeopleTableProps {
   people: PersonRow[];
   currentPage: number;
   totalPages: number;
+  query?: string;
 }
 
 export function PeopleTable({
   people,
   currentPage,
   totalPages,
+  query,
 }: PeopleTableProps) {
   return (
     <DataTable
@@ -49,8 +51,13 @@ export function PeopleTable({
       columns={columns}
       getRowKey={(person) => person.people_id}
       minWidth="560px"
-      emptyMessage="No people yet."
-      pagination={{ currentPage, totalPages, basePath: "/dashboard/people" }}
+      emptyMessage={query ? "No people match your search." : "No people yet."}
+      pagination={{
+        currentPage,
+        totalPages,
+        basePath: "/dashboard/people",
+        extraParams: query ? { q: query } : undefined,
+      }}
     />
   );
 }

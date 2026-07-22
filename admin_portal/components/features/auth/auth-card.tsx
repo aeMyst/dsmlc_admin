@@ -27,9 +27,8 @@ export function AuthCard() {
           Event & Membership Analytics Dashboard
         </p>
 
-        <p className="relative z-10 text-xs font-light text-white/30">
-          Data Science & Machine Learning Club © {new Date().getFullYear()} —
-          All rights reserved
+        <p className="relative z-10 mt-6 text-xs font-light text-white/30">
+          DSMLC © {new Date().getFullYear()} — All rights reserved
         </p>
       </div>
 

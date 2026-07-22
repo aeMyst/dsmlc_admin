@@ -3,7 +3,7 @@
 import {
   DataTable,
   type DataTableColumn,
-} from "@/components/features/dashboard/data-table";
+} from "@/components/ui/dashboard/data-table";
 import { MemberFormDialog } from "@/components/features/dashboard/forms/member-form-dialog";
 import type { MemberRow } from "@/lib/queries/members";
 
@@ -75,7 +75,21 @@ export function MembershipsTable({ members }: MembershipsTableProps) {
       columns={columns}
       getRowKey={(member) => member.membership_id}
       minWidth="720px"
-      emptyMessage="No members yet."
+      emptyMessage="No members match your search."
+      search={{
+        placeholder: "Search members...",
+        filterFn: (member, query) => {
+          const q = query.toLowerCase();
+          const fullName =
+            `${member.first_name} ${member.last_name}`.toLowerCase();
+          return (
+            fullName.includes(q) ||
+            member.first_name.toLowerCase().includes(q) ||
+            member.last_name.toLowerCase().includes(q) ||
+            member.email.toLowerCase().includes(q)
+          );
+        },
+      }}
     />
   );
 }
