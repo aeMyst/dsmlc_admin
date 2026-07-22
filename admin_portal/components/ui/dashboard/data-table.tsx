@@ -21,7 +21,9 @@ interface DataTableSearchConfig<T> {
   filterFn: (row: T, query: string) => boolean;
 }
 
-interface DataTableCategoryFilterConfig<T> {
+export interface DataTableFilterConfig<T> {
+  id: string;
+  label?: string;
   getValue: (row: T) => string;
 }
 
@@ -39,9 +41,11 @@ interface DataTableProps<T> {
   minWidth?: string;
   emptyMessage?: string;
   search?: DataTableSearchConfig<T>;
-  categoryFilter?: DataTableCategoryFilterConfig<T>;
+  filters?: DataTableFilterConfig<T>[];
   pagination?: DataTablePaginationConfig;
 }
+
+const ALL = "All";
 
 export function DataTable<T>({
   data,
@@ -50,35 +54,42 @@ export function DataTable<T>({
   minWidth = "640px",
   emptyMessage = "No results.",
   search,
-  categoryFilter,
+  filters,
   pagination,
 }: DataTableProps<T>) {
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("All");
+  const [activeFilters, setActiveFilters] = useState<Record<string, string>>(
+    {},
+  );
   const shouldReduceMotion = useReducedMotion();
 
-  const categories = useMemo(() => {
-    if (!categoryFilter) return [];
-    return [
-      "All",
-      ...Array.from(new Set(data.map((row) => categoryFilter.getValue(row)))),
-    ];
-  }, [data, categoryFilter]);
+  const filterOptions = useMemo(() => {
+    const result: Record<string, string[]> = {};
+    for (const filter of filters ?? []) {
+      result[filter.id] = Array.from(
+        new Set(data.map((row) => filter.getValue(row))),
+      );
+    }
+    return result;
+  }, [data, filters]);
 
   const filtered = data
     .filter((row) =>
-      categoryFilter && category !== "All"
-        ? categoryFilter.getValue(row) === category
-        : true,
+      (filters ?? []).every((filter) => {
+        const selected = activeFilters[filter.id];
+        return (
+          !selected || selected === ALL || filter.getValue(row) === selected
+        );
+      }),
     )
     .filter((row) => (search ? search.filterFn(row, query) : true));
 
-  const hasToolbar = Boolean(search || categoryFilter);
+  const hasToolbar = Boolean(search || (filters && filters.length > 0));
 
   return (
     <div className="space-y-4">
       {hasToolbar && (
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
           {search && (
             <SearchInput
               value={query}
@@ -87,24 +98,40 @@ export function DataTable<T>({
             />
           )}
 
-          {categoryFilter && (
-            <div className="flex flex-wrap gap-2">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setCategory(cat)}
-                  className={
-                    cat === category
-                      ? "min-h-[40px] rounded-full bg-brand px-4 py-2 text-xs font-normal text-white"
-                      : "min-h-[40px] rounded-full border border-white/15 px-4 py-2 text-xs font-light text-white/70 transition-colors hover:bg-white/5 hover:text-white"
-                  }
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          )}
+          {filters?.map((filter) => {
+            const selected = activeFilters[filter.id] ?? ALL;
+            return (
+              <div
+                key={filter.id}
+                className="flex flex-wrap items-center gap-2"
+              >
+                {filter.label && (
+                  <span className="text-xs font-light text-white/40">
+                    {filter.label}
+                  </span>
+                )}
+                {[ALL, ...filterOptions[filter.id]].map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() =>
+                      setActiveFilters((prev) => ({
+                        ...prev,
+                        [filter.id]: option,
+                      }))
+                    }
+                    className={
+                      option === selected
+                        ? "min-h-[40px] rounded-full bg-brand px-4 py-2 text-xs font-normal text-white"
+                        : "min-h-[40px] rounded-full border border-white/15 px-4 py-2 text-xs font-light text-white/70 transition-colors hover:bg-white/5 hover:text-white"
+                    }
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            );
+          })}
         </div>
       )}
 

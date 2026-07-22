@@ -97,6 +97,19 @@ export function MembershipsTable({ members }: MembershipsTableProps) {
           );
         },
       }}
+      filters={[
+        {
+          id: "type",
+          label: "Type",
+          getValue: (member) => member.membership_type,
+        },
+        {
+          id: "mailing",
+          label: "Mailing",
+          getValue: (member) =>
+            member.mailing ? "Subscribed" : "Not subscribed",
+        },
+      ]}
     />
   );
 }

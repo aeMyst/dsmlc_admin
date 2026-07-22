@@ -95,7 +95,12 @@ export function EventsTable({ events }: EventsTableProps) {
         filterFn: (event, query) =>
           event.event_name.toLowerCase().includes(query.toLowerCase()),
       }}
-      categoryFilter={{ getValue: (event) => event.event_type }}
+      filters={[
+        {
+          id: "category",
+          getValue: (event) => event.event_type,
+        },
+      ]}
     />
   );
 }
