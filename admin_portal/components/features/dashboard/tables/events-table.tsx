@@ -29,7 +29,7 @@ const columns: DataTableColumn<EventRow>[] = [
     render: (event) => (
       <Link
         href={`/dashboard/events/${event.event_id}`}
-        className="text-white transition-colors hover:text-[#FF914D]"
+        className="text-white transition-colors hover:text-brand-hover"
       >
         {event.event_name}
       </Link>
