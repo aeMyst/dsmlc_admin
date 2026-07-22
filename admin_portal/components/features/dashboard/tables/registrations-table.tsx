@@ -25,41 +25,35 @@ export function RegistrationsTable({
     {
       id: "name",
       header: "Name",
-      width: "20%",
       render: (r) => `${r.first_name} ${r.last_name}`,
     },
     {
       id: "email",
       header: "Email",
-      width: "26%",
       render: (r) => r.email,
       className: "px-6 py-4 text-white/50",
     },
     {
       id: "status",
       header: "Status",
-      width: "14%",
       render: (r) => r.status.replace("-", " "),
       className: "px-6 py-4 text-white/50 capitalize",
     },
     {
       id: "course_credit",
       header: "Course credit",
-      width: "16%",
       render: (r) => r.course_name ?? "—",
       className: "px-6 py-4 text-white/50",
     },
     {
       id: "source",
       header: "Source",
-      width: "14%",
       render: (r) => r.coming_from ?? "—",
       className: "px-6 py-4 text-white/50",
     },
     {
       id: "actions",
       header: "",
-      width: "10%",
       render: (r) => (
         <RegistrationFormDialog
           mode="edit"
@@ -82,7 +76,37 @@ export function RegistrationsTable({
       columns={columns}
       getRowKey={(r) => r.registration_id}
       minWidth="640px"
-      emptyMessage="No registrations yet."
+      emptyMessage="No registrations match your search."
+      search={{
+        placeholder: "Search registrations...",
+        filterFn: (r, query) => {
+          const q = query.toLowerCase();
+          const fullName = `${r.first_name} ${r.last_name}`.toLowerCase();
+          return (
+            fullName.includes(q) ||
+            r.first_name.toLowerCase().includes(q) ||
+            r.last_name.toLowerCase().includes(q) ||
+            r.email.toLowerCase().includes(q)
+          );
+        },
+      }}
+      filters={[
+        {
+          id: "status",
+          label: "Status",
+          getValue: (r) => r.status.replace("-", " "),
+        },
+        {
+          id: "course_credit",
+          label: "Course",
+          getValue: (r) => r.course_name ?? "No course credit",
+        },
+        {
+          id: "source",
+          label: "Source",
+          getValue: (r) => r.coming_from ?? "Unknown",
+        },
+      ]}
       pagination={{
         currentPage,
         totalPages,

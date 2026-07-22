@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import { Download } from "lucide-react";
 
 import type { EventCourseCreditRow } from "@/lib/queries/registrations";
@@ -22,15 +23,33 @@ const HEADERS = [
   "Registered at",
 ];
 
+const ALL_COURSES = "All courses";
+
 export function EventCourseExportButton({
   eventName,
   rows,
 }: EventCourseExportButtonProps) {
+  const courses = useMemo(
+    () => Array.from(new Set(rows.map((r) => r.course_name))).sort(),
+    [rows],
+  );
+  const [selectedCourse, setSelectedCourse] = useState(ALL_COURSES);
+
+  const filteredRows =
+    selectedCourse === ALL_COURSES
+      ? rows
+      : rows.filter((r) => r.course_name === selectedCourse);
+
   function handleDownload() {
+    const suffix =
+      selectedCourse === ALL_COURSES
+        ? "course-collab"
+        : `course-collab-${slugifyFilename(selectedCourse)}`;
+
     downloadCsv(
-      `${slugifyFilename(eventName)}-course-collab-${new Date().toISOString().slice(0, 10)}.csv`,
+      `${slugifyFilename(eventName)}-${suffix}-${new Date().toISOString().slice(0, 10)}.csv`,
       HEADERS,
-      rows.map((r) => [
+      filteredRows.map((r) => [
         r.first_name,
         r.last_name,
         r.student_id,
@@ -44,13 +63,31 @@ export function EventCourseExportButton({
   }
 
   return (
-    <Button
-      variant="outline"
-      onClick={handleDownload}
-      disabled={rows.length === 0}
-    >
-      <Download className="h-4 w-4" strokeWidth={1.75} />
-      Export course collab ({rows.length})
-    </Button>
+    <div className="flex flex-wrap items-center gap-2">
+      <select
+        value={selectedCourse}
+        onChange={(e) => setSelectedCourse(e.target.value)}
+        disabled={courses.length === 0}
+        className="min-h-[44px] rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-light text-white outline-none focus:border-white/40 disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        <option value={ALL_COURSES} className="bg-white text-black">
+          {ALL_COURSES}
+        </option>
+        {courses.map((course) => (
+          <option key={course} value={course} className="bg-white text-black">
+            {course}
+          </option>
+        ))}
+      </select>
+
+      <Button
+        variant="outline"
+        onClick={handleDownload}
+        disabled={filteredRows.length === 0}
+      >
+        <Download className="h-4 w-4" strokeWidth={1.75} />
+        Export ({filteredRows.length})
+      </Button>
+    </div>
   );
 }
