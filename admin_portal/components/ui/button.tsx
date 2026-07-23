@@ -12,7 +12,8 @@ const BASE =
   "inline-flex min-h-[44px] cursor-pointer items-center justify-center rounded-full px-5 py-2.5 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-60";
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary: "accent-gradient accent-glow font-medium text-white",
+  primary:
+    "accent-gradient font-bold text-white shadow-[0_0px_15px_-2px_rgba(255,90,46,0.65)]",
   secondary:
     "border border-[#2a2a2a] font-light text-[#c0c0c0] hover:bg-white/5 hover:text-white",
   outline:
