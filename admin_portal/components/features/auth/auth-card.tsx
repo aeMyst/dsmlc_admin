@@ -5,11 +5,19 @@ import { LoginForm } from "@/components/features/auth/login-form";
 
 export function AuthCard() {
   return (
-    <div className="relative grid w-full max-w-5xl grid-cols-1 overflow-hidden rounded-3xl border border-white/10 backdrop-blur-xl bg-black/90 md:grid-cols-2">
-      <div className="absolute left-1 right-1 top-0 h-px rounded-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+    <div className="relative grid w-full max-w-5xl grid-cols-1 overflow-hidden rounded-3xl border border-[#1e1e1e] backdrop-blur-xl bg-[#0d0d0d]/95 md:grid-cols-2">
+      {/* Brand gradient hairline along the top edge */}
+      <div
+        aria-hidden="true"
+        className="absolute left-1 right-1 top-0 h-px rounded-full"
+        style={{
+          background:
+            "linear-gradient(90deg, transparent, #ff5a2e, transparent)",
+        }}
+      />
 
       {/* logo section */}
-      <div className="relative flex flex-col items-center justify-center overflow-hidden border-b border-white/10 p-10 md:border-b-0 md:border-r md:p-16">
+      <div className="relative flex flex-col items-center justify-center overflow-hidden border-b border-[#1e1e1e] p-10 md:border-b-0 md:border-r md:p-16">
         <Image
           src="/dsmlc_square_dark_transparent.png"
           alt="Organization logo"
@@ -19,11 +27,11 @@ export function AuthCard() {
           className="relative z-10 h-auto w-full max-w-xs md:max-w-sm"
         />
 
-        <p className="relative z-10 mt-6 max-w-xs text-center text-sm font-light leading-relaxed text-white/50 md:text-base">
+        <p className="relative z-10 mt-6 max-w-xs text-center text-sm font-light leading-relaxed text-[#9a9a9a] md:text-base">
           Event & Membership Analytics Dashboard
         </p>
 
-        <p className="relative z-10 mt-6 text-xs font-light text-white/30">
+        <p className="relative z-10 mt-6 text-xs font-light text-[#666]">
           DSMLC © {new Date().getFullYear()} — All rights reserved
         </p>
       </div>

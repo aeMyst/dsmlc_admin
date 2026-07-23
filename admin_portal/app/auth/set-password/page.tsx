@@ -3,16 +3,17 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type React from "react";
+import { Lock, User } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/client";
 import { ShaderBackground } from "@/components/ui/hero/hero-section";
+import { AuthField } from "@/components/features/auth/auth-field";
+import { PasswordStrength } from "@/components/features/auth/password-stregth";
+import { Button } from "@/components/ui/button";
 
 export default function SetPasswordPage() {
   const router = useRouter();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [sessionReady, setSessionReady] = useState(false);
@@ -29,15 +30,21 @@ export default function SetPasswordPage() {
     event.preventDefault();
     setError(null);
 
-    if (!firstName.trim() || !lastName.trim()) {
+    const formData = new FormData(event.currentTarget);
+    const firstName = String(formData.get("firstName") ?? "").trim();
+    const lastName = String(formData.get("lastName") ?? "").trim();
+    const newPassword = String(formData.get("password") ?? "");
+    const confirmPassword = String(formData.get("confirmPassword") ?? "");
+
+    if (!firstName || !lastName) {
       setError("Please enter your first and last name.");
       return;
     }
-    if (password.length < 8) {
+    if (newPassword.length < 8) {
       setError("Password must be at least 8 characters.");
       return;
     }
-    if (password !== confirmPassword) {
+    if (newPassword !== confirmPassword) {
       setError("Passwords don't match.");
       return;
     }
@@ -46,7 +53,7 @@ export default function SetPasswordPage() {
     const supabase = createClient();
 
     const { error: passwordError } = await supabase.auth.updateUser({
-      password,
+      password: newPassword,
     });
     if (passwordError) {
       setError(passwordError.message);
@@ -57,8 +64,8 @@ export default function SetPasswordPage() {
     const { error: profileError } = await supabase.rpc(
       "complete_admin_profile",
       {
-        p_first_name: firstName.trim(),
-        p_last_name: lastName.trim(),
+        p_first_name: firstName,
+        p_last_name: lastName,
       },
     );
 
@@ -82,7 +89,7 @@ export default function SetPasswordPage() {
     return (
       <ShaderBackground>
         <main className="relative z-20 flex min-h-screen items-center justify-center px-6">
-          <p className="text-base font-light text-white/50">
+          <p className="text-sm font-light text-[#9a9a9a]">
             Verifying your invite link…
           </p>
         </main>
@@ -93,101 +100,78 @@ export default function SetPasswordPage() {
   return (
     <ShaderBackground>
       <main className="relative z-20 flex min-h-screen items-center justify-center px-6 py-16">
-        <div className="relative w-full max-w-xl rounded-3xl border border-white/10 bg-black/80 p-10 backdrop-blur-2xl md:p-12">
-          <div className="absolute left-1 right-1 top-0 h-px rounded-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+        <div className="relative w-full max-w-xl rounded-3xl border border-[#1e1e1e] bg-[#0d0d0d]/95 p-10 backdrop-blur-2xl md:p-12">
+          <div
+            aria-hidden="true"
+            className="absolute left-1 right-1 top-0 h-px rounded-full"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent, #ff5a2e, transparent)",
+            }}
+          />
 
-          <h1 className="mb-2 text-3xl font-light text-white md:text-4xl">
+          <h1 className="mb-2 text-3xl font-bold text-[#f2f2f2] md:text-4xl">
             Complete your account
           </h1>
+          <p className="mb-8 text-sm font-light text-[#9a9a9a]">
+            Set a password and confirm your name to finish setting up dashboard
+            access.
+          </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label
-                  htmlFor="firstName"
-                  className="mb-2 block text-sm font-light text-white/70 md:text-base"
-                >
-                  First name
-                </label>
-                <input
-                  id="firstName"
-                  type="text"
-                  required
-                  autoComplete="given-name"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  className="w-full rounded-full border border-white/15 bg-white/5 px-4 py-3 text-base text-white outline-none transition-colors focus:border-white/40 focus:ring-2 focus:ring-white/20 md:text-lg"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="lastName"
-                  className="mb-2 block text-sm font-light text-white/70 md:text-base"
-                >
-                  Last name
-                </label>
-                <input
-                  id="lastName"
-                  type="text"
-                  required
-                  autoComplete="family-name"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  className="w-full rounded-full border border-white/15 bg-white/5 px-4 py-3 text-base text-white outline-none transition-colors focus:border-white/40 focus:ring-2 focus:ring-white/20 md:text-lg"
-                />
-              </div>
+              <AuthField
+                label="First name"
+                name="firstName"
+                required
+                autoComplete="given-name"
+                icon={<User className="h-4 w-4" strokeWidth={1.75} />}
+              />
+              <AuthField
+                label="Last name"
+                name="lastName"
+                required
+                autoComplete="family-name"
+                icon={<User className="h-4 w-4" strokeWidth={1.75} />}
+              />
             </div>
 
             <div>
-              <label
-                htmlFor="password"
-                className="mb-2 block text-sm font-light text-white/70 md:text-base"
-              >
-                New password
-              </label>
-              <input
-                id="password"
+              <AuthField
+                label="New password"
+                name="password"
                 type="password"
                 required
                 minLength={8}
                 autoComplete="new-password"
-                value={password}
+                icon={<Lock className="h-4 w-4" strokeWidth={1.75} />}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-full border border-white/15 bg-white/5 px-4 py-3 text-base text-white outline-none transition-colors focus:border-white/40 focus:ring-2 focus:ring-white/20 md:text-lg"
               />
+              <PasswordStrength value={password} />
             </div>
 
-            <div>
-              <label
-                htmlFor="confirmPassword"
-                className="mb-2 block text-sm font-light text-white/70 md:text-base"
-              >
-                Confirm password
-              </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                required
-                minLength={8}
-                autoComplete="new-password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full rounded-full border border-white/15 bg-white/5 px-4 py-3 text-base text-white outline-none transition-colors focus:border-white/40 focus:ring-2 focus:ring-white/20 md:text-lg"
-              />
-            </div>
+            <AuthField
+              label="Confirm password"
+              name="confirmPassword"
+              type="password"
+              required
+              minLength={8}
+              autoComplete="new-password"
+              icon={<Lock className="h-4 w-4" strokeWidth={1.75} />}
+            />
 
             {error && (
               <p className="text-sm font-light text-red-400">{error}</p>
             )}
 
-            <button
+            <Button
               type="submit"
+              variant="primary"
               disabled={isSubmitting}
-              className="w-full cursor-pointer rounded-full bg-white py-3.5 text-base font-normal text-black transition-all duration-200 hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-60 md:text-lg"
+              className="w-full"
             >
               {isSubmitting ? "Saving…" : "Complete setup"}
-            </button>
+            </Button>
           </form>
         </div>
       </main>

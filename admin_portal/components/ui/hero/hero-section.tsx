@@ -1,6 +1,6 @@
 "use client";
 
-import { PulsingBorder, MeshGradient } from "@paper-design/shaders-react";
+import { MeshGradient } from "@paper-design/shaders-react";
 import Image from "next/image";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
@@ -9,7 +9,9 @@ interface ShaderBackgroundProps {
   children: React.ReactNode;
 }
 
-const GRADIENT_COLORS = ["#1A1A1A", "#8B4513", "#1A1A1A", "#FFFFFF", "#1A1A1A"];
+// App palette: near-black base with the brand orange and its light accent
+// as the moving highlights (was brown/white).
+const GRADIENT_COLORS = ["#0a0a0a", "#ff5a2e", "#0a0a0a", "#ff8a5c", "#0a0a0a"];
 
 export function ShaderBackground({ children }: ShaderBackgroundProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -36,7 +38,7 @@ export function ShaderBackground({ children }: ShaderBackgroundProps) {
   return (
     <div
       ref={containerRef}
-      className="relative min-h-screen w-full overflow-hidden"
+      className="relative min-h-screen w-full overflow-hidden bg-[#0a0a0a]"
     >
       {/* SVG Filters */}
       <svg className="absolute inset-0 h-0 w-0">
@@ -74,6 +76,10 @@ export function ShaderBackground({ children }: ShaderBackgroundProps) {
         speed={0.2}
         distortion={0.8}
       />
+
+      {/* Darkening veil so the shader reads as atmosphere behind the card
+          rather than competing with the form for attention. */}
+      <div className="absolute inset-0 bg-[#0a0a0a]/70" aria-hidden="true" />
 
       {children}
     </div>
