@@ -1,35 +1,31 @@
 "use client";
 
-import type React from "react";
+import { Search } from "lucide-react";
 
-import { cn } from "@/lib/utils";
-
-interface SearchInputProps extends Omit<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  "type" | "value" | "onChange"
-> {
+interface SearchInputProps {
   value: string;
   onChange: (value: string) => void;
+  placeholder?: string;
 }
 
 export function SearchInput({
   value,
   onChange,
-  placeholder = "Search...",
-  className,
-  ...props
+  placeholder,
 }: SearchInputProps) {
   return (
-    <input
-      type="text"
-      placeholder={placeholder}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className={cn(
-        "w-full min-h-[44px] rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm text-white placeholder:text-white/30 outline-none focus:border-white/40 sm:w-64",
-        className,
-      )}
-      {...props}
-    />
+    <div className="relative">
+      <Search
+        className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9a9a9a]"
+        strokeWidth={1.75}
+      />
+      <input
+        type="search"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="min-h-[44px] w-64 rounded-full border border-[#262626] bg-[#141414] py-2 pl-10 pr-4 text-sm font-light text-[#f2f2f2] placeholder:text-[#9a9a9a] outline-none transition-colors focus:border-brand"
+      />
+    </div>
   );
 }

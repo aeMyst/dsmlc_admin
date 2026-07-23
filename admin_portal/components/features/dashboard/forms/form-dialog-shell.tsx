@@ -61,9 +61,11 @@ export function FormDialogShell({
                   : { opacity: 0, scale: 0.96, y: 8 }
               }
               transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-              className="relative max-h-[85vh] w-full max-w-md overflow-y-auto rounded-2xl border border-white/10 bg-neutral-950 p-6 sm:p-8"
+              className="relative max-h-[85vh] w-full max-w-md overflow-y-auto rounded-[14px] border border-[#1e1e1e] bg-[#111111] p-6 sm:p-8"
             >
-              <h2 className="mb-6 text-lg font-light text-white">{title}</h2>
+              <h2 className="mb-6 text-lg font-medium text-[#f2f2f2]">
+                {title}
+              </h2>
               {children}
             </motion.div>
           </div>

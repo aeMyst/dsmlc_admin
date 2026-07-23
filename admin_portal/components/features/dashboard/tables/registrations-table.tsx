@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/dashboard/data-table";
 import { RegistrationFormDialog } from "@/components/features/dashboard/forms/registration-form-dialog";
 import { TriggerLabel } from "@/components/ui/button";
+import { statusColor } from "@/lib/palette";
 import type { RegistrationRow } from "@/lib/queries/registrations";
 
 interface RegistrationsTableProps {
@@ -31,25 +32,35 @@ export function RegistrationsTable({
       id: "email",
       header: "Email",
       render: (r) => r.email,
-      className: "px-6 py-4 text-white/50",
+      className: "px-6 py-4 text-[#8a8a8a]",
     },
     {
       id: "status",
       header: "Status",
-      render: (r) => r.status.replace("-", " "),
-      className: "px-6 py-4 text-white/50 capitalize",
+      render: (r) => {
+        const color = statusColor(r.status);
+        return (
+          <span
+            className="rounded-full border px-2.5 py-1 text-xs capitalize"
+            style={{ borderColor: `${color}66`, color }}
+          >
+            {r.status.replace("-", " ")}
+          </span>
+        );
+      },
+      className: "px-6 py-4",
     },
     {
       id: "course_credit",
       header: "Course credit",
       render: (r) => r.course_name ?? "—",
-      className: "px-6 py-4 text-white/50",
+      className: "px-6 py-4 text-[#8a8a8a]",
     },
     {
       id: "source",
       header: "Source",
       render: (r) => r.coming_from ?? "—",
-      className: "px-6 py-4 text-white/50",
+      className: "px-6 py-4 text-[#8a8a8a]",
     },
     {
       id: "actions",

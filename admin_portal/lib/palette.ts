@@ -1,15 +1,42 @@
-export const BRAND = "#F86306"
-export const BRAND_HOVER = "#FF914D"
+export const BRAND = "#ff5a2e"
+export const BRAND_DEEP = "#d43a13"
+export const BRAND_LIGHT = "#ffb08e"
+export const BLUE = "#5b8dee"
+export const NEUTRAL_BAR = "#2c2c2c"
 
-export const CATEGORY_COLORS = [
-  BRAND, // primary orange
-  BRAND_HOVER, // light orange
-  "#FDBA74", // pale orange
-  "#C2410C", // burnt orange
-  "#FFD7B0", // cream orange
-  "#7C2D12", // deep rust
-] as const
+export const BRAND_HOVER = BRAND_LIGHT
+
+export function categoryColor(category: string): string {
+  switch (category) {
+    case "Competition":
+      return BRAND
+    case "Social":
+    case "Workshop":
+      return BLUE
+    default:
+      return BLUE
+  }
+}
+
+export function statusColor(status: string): string {
+  switch (status) {
+    case "attended":
+      return BRAND
+    case "at-door":
+      return BLUE
+    default:
+      return "#9a9a9a"
+  }
+}
+
+const INDEX_COLORS = [BRAND, BLUE, BRAND_LIGHT, "#8a8a8a", BRAND_DEEP, "#c0c0c0"]
 
 export function colorForIndex(index: number): string {
-  return CATEGORY_COLORS[index % CATEGORY_COLORS.length]
+  return INDEX_COLORS[index % INDEX_COLORS.length]
+}
+
+export function barGradient(base: string): string {
+  return base === BRAND
+    ? "linear-gradient(90deg, #ff5a2e, #ff8a5c)"
+    : `linear-gradient(90deg, ${base}, ${base}cc)`
 }

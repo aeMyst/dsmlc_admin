@@ -27,12 +27,26 @@ export interface RsvpPoint {
   atDoor: number
 }
 
+/** Per-KPI sparkline series, ordered oldest → newest. */
+export interface OverviewTrends {
+  events: number[]
+  attendees: number[]
+  turnout: number[]
+  rating: number[]
+}
+
 export interface DashboardOverview {
   stats: OverviewStats
   attendanceOverTime: AttendancePoint[]
   rsvpSeries: RsvpPoint[]
+  trends: OverviewTrends
 }
 
+/**
+ * Pulls every event's live stats once (from EVENTS/REGISTRATIONS/FEEDBACK via
+ * getEventsWithStats) and derives the overview cards + both time-series
+ * charts from that single result, instead of hitting Supabase three times.
+ */
 export async function getDashboardOverview(): Promise<DashboardOverview> {
   const events = await getEventsWithStats()
 
@@ -54,6 +68,19 @@ export async function getDashboardOverview(): Promise<DashboardOverview> {
 
   const chronological = [...events].sort((a, b) => (a.event_date < b.event_date ? -1 : 1))
 
+  // Sparkline series. Events/attendees accumulate (they only ever grow);
+  // turnout and rating are point-in-time values per event, so they're
+  // plotted as-is to show the shape of the variation over time.
+  let runningAttendees = 0
+  const trends: OverviewTrends = {
+    events: chronological.map((_, i) => i + 1),
+    attendees: chronological.map((e) => (runningAttendees += e.attended)),
+    turnout: chronological.map((e) => e.turnoutRate),
+    rating: chronological
+      .filter((e) => e.avgRating !== null)
+      .map((e) => e.avgRating as number),
+  }
+
   return {
     stats: { totalEvents, totalAttendees, avgTurnoutRate, avgRating },
     attendanceOverTime: chronological.map((e) => ({
@@ -68,6 +95,7 @@ export async function getDashboardOverview(): Promise<DashboardOverview> {
       attended: e.attended,
       atDoor: e.atDoor,
     })),
+    trends,
   }
 }
 

@@ -1,3 +1,5 @@
+import { Calendar, Star, TrendingUp, Users } from "lucide-react";
+
 import {
   getDashboardOverview,
   getCategoryRatings,
@@ -14,7 +16,7 @@ import { MemberGrowthChart } from "@/components/features/dashboard/graphs/member
 
 export default async function DashboardPage() {
   const [
-    { stats, attendanceOverTime, rsvpSeries },
+    { stats, attendanceOverTime, rsvpSeries, trends },
     categoryRatings,
     sources,
     memberGrowth,
@@ -40,12 +42,16 @@ export default async function DashboardPage() {
           label="Total Events"
           value={stats.totalEvents}
           caption="This semester"
+          icon={<Calendar className="h-3.5 w-3.5" strokeWidth={2} />}
+          trend={trends.events}
         />
         <StatCard
           index={1}
           label="Total Attendees"
           value={stats.totalAttendees}
           caption="Across all events"
+          icon={<Users className="h-3.5 w-3.5" strokeWidth={2} />}
+          trend={trends.attendees}
         />
         <StatCard
           index={2}
@@ -54,25 +60,29 @@ export default async function DashboardPage() {
           caption={
             stats.avgTurnoutRate >= 75 ? "Strong turnout" : "Room to grow"
           }
+          icon={<TrendingUp className="h-3.5 w-3.5" strokeWidth={2} />}
+          trend={trends.turnout}
         />
         <StatCard
           index={3}
           label="Avg. Rating"
           value={`★ ${stats.avgRating}`}
           caption="Out of 5.0"
+          icon={<Star className="h-3.5 w-3.5" strokeWidth={2} />}
+          trend={trends.rating}
         />
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <h2 className="mb-4 text-sm font-light text-white/70">
+        <div className="rounded-[14px] border border-[#1e1e1e] bg-[#111111] p-6">
+          <h2 className="mb-4 text-sm font-light text-[#9a9a9a]">
             Attendance Over Time
           </h2>
           <AttendanceLineChart data={attendanceOverTime} />
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <h2 className="mb-4 text-sm font-light text-white/70">
+        <div className="rounded-[14px] border border-[#1e1e1e] bg-[#111111] p-6">
+          <h2 className="mb-4 text-sm font-light text-[#9a9a9a]">
             RSVP vs. Actual Turnout
           </h2>
           <RsvpTurnoutChart data={rsvpChartData} />
@@ -89,16 +99,16 @@ export default async function DashboardPage() {
           }))}
         />
 
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <h2 className="mb-4 text-sm font-light text-white/70">
+        <div className="rounded-[14px] border border-[#1e1e1e] bg-[#111111] p-6">
+          <h2 className="mb-4 text-sm font-light text-[#9a9a9a]">
             Member Growth
           </h2>
           <MemberGrowthChart data={memberGrowth} />
         </div>
       </div>
 
-      <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6">
-        <h2 className="mb-4 text-sm font-light text-white/70">
+      <div className="mt-6 rounded-[14px] border border-[#1e1e1e] bg-[#111111] p-6">
+        <h2 className="mb-4 text-sm font-light text-[#9a9a9a]">
           Sign-up Source
         </h2>
         <SignupSourceChart data={sources} />

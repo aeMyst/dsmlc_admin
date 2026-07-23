@@ -5,6 +5,7 @@ import {
   DataTable,
   type DataTableColumn,
 } from "@/components/ui/dashboard/data-table";
+import { categoryColor } from "@/lib/palette";
 import { formatDate } from "@/lib/date";
 
 interface EventRow {
@@ -31,7 +32,7 @@ const columns: DataTableColumn<EventRow>[] = [
     render: (event) => (
       <Link
         href={`/dashboard/events/${event.event_id}`}
-        className="text-white transition-colors hover:text-brand-hover"
+        className="text-[#f2f2f2] transition-colors hover:text-brand"
       >
         {event.event_name}
       </Link>
@@ -41,18 +42,24 @@ const columns: DataTableColumn<EventRow>[] = [
     id: "category",
     header: "Category",
     width: "14%",
-    render: (event) => (
-      <span className="rounded-full border border-white/15 px-2.5 py-1 text-xs text-white/70">
-        {event.event_type}
-      </span>
-    ),
+    render: (event) => {
+      const color = categoryColor(event.event_type);
+      return (
+        <span
+          className="rounded-full border px-2.5 py-1 text-xs"
+          style={{ borderColor: `${color}66`, color }}
+        >
+          {event.event_type}
+        </span>
+      );
+    },
   },
   {
     id: "date",
     header: "Date",
     width: "12%",
     render: (event) => formatDate(event.event_date),
-    className: "px-6 py-4 text-white/50",
+    className: "px-6 py-4 text-[#8a8a8a]",
   },
   {
     id: "rsvp_atdoor_att",
@@ -60,14 +67,14 @@ const columns: DataTableColumn<EventRow>[] = [
     width: "20%",
     render: (event) =>
       `${event.rsvp} / ${event.atDoor ?? 0} / ${event.attended}`,
-    className: "px-6 py-4 text-white/50",
+    className: "px-6 py-4 text-[#8a8a8a]",
   },
   {
     id: "turnout",
     header: "Turnout",
     width: "14%",
     render: (event) => `${event.turnoutRate}%`,
-    className: "px-6 py-4 text-white/50",
+    className: "px-6 py-4 text-[#8a8a8a]",
   },
   {
     id: "rating",
@@ -75,7 +82,7 @@ const columns: DataTableColumn<EventRow>[] = [
     width: "14%",
     render: (event) =>
       event.avgRating !== null ? `★ ${event.avgRating}` : "—",
-    className: "px-6 py-4 text-white/50",
+    className: "px-6 py-4 text-[#8a8a8a]",
   },
 ];
 

@@ -17,22 +17,24 @@ export async function DashboardShell({ children }: DashboardShellProps) {
   const admin = await getCurrentAdmin();
 
   return (
-    <div className="min-h-screen bg-black">
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col justify-between border-r border-white/10 bg-neutral-950 p-6 md:flex">
+    <div className="min-h-screen bg-[#0a0a0a]">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[220px] flex-col justify-between border-r border-[#1e1e1e] bg-[#0a0a0a] p-5 md:flex">
         <div>
           <div className="flex items-center gap-3">
-            <Image
-              src="/dsmlc_square_light_gradient_logo_transparent.png"
-              alt="Club logo"
-              width={36}
-              height={36}
-              className="h-9 w-9 shrink-0 rounded-lg object-contain"
-            />
+            <div className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-lg">
+              <Image
+                src="/dsmlc_square_light_gradient_logo_transparent.png"
+                alt="Club logo"
+                width={26}
+                height={26}
+                className="h-[26px] w-[26px] object-contain"
+              />
+            </div>
             <div>
-              <p className="text-sm font-medium leading-tight text-white">
+              <p className="text-sm font-semibold leading-tight text-[#f2f2f2]">
                 {siteConfig.name}
               </p>
-              <p className="text-xs font-light leading-tight text-white/40">
+              <p className="text-xs font-light leading-tight text-[#8a8a8a]">
                 {siteConfig.orgSubtitle}
               </p>
             </div>
@@ -48,28 +50,32 @@ export async function DashboardShell({ children }: DashboardShellProps) {
         />
       </aside>
 
-      <div className="sticky top-0 z-20 border-b border-white/10 bg-neutral-950 md:hidden">
+      <div className="sticky top-0 z-20 border-b border-[#1e1e1e] bg-[#0a0a0a] md:hidden">
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2.5">
-            <Image
-              src="/dsmlc_square_dark_transparent.png"
-              alt="Club logo"
-              width={32}
-              height={32}
-              className="h-8 w-8 shrink-0 rounded-lg object-contain"
-            />
-            <p className="text-sm font-medium text-white">{siteConfig.name}</p>
+            <div className="accent-gradient logo-glow flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
+              <Image
+                src="/dsmlc_square_dark_transparent.png"
+                alt="Club logo"
+                width={24}
+                height={24}
+                className="h-6 w-6 object-contain"
+              />
+            </div>
+            <p className="text-sm font-semibold text-[#f2f2f2]">
+              {siteConfig.name}
+            </p>
           </div>
           <MobileNav admin={admin} />
         </div>
 
-        <div className="border-t border-white/10 px-4 py-3">
+        <div className="border-t border-[#1e1e1e] px-4 py-3">
           <TopBarTitle />
         </div>
       </div>
 
-      <div className="overflow-x-hidden md:pl-64">
-        <div className="hidden items-center border-b border-white/10 px-8 py-4 md:flex">
+      <div className="overflow-x-hidden md:pl-[220px]">
+        <div className="hidden items-center border-b border-[#1a1a1a] px-8 py-4 md:flex">
           <TopBarTitle />
         </div>
 

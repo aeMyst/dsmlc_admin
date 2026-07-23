@@ -27,9 +27,6 @@ export async function createRegistration(
       throw new Error("First name, last name, and email are required.")
     }
 
-    // Check whether this person already exists — match on email first
-    // (the most reliable identity key), falling back to student ID if no
-    // email match was found. Only create a new PEOPLE row if neither hits.
     let people_id: string | null = null
 
     const { data: byEmail } = await supabase

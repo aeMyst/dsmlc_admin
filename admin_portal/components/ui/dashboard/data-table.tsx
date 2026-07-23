@@ -106,7 +106,7 @@ export function DataTable<T>({
                 className="flex flex-wrap items-center gap-2"
               >
                 {filter.label && (
-                  <span className="text-xs font-light text-white/40">
+                  <span className="text-xs font-light text-[#8a8a8a]">
                     {filter.label}
                   </span>
                 )}
@@ -122,8 +122,8 @@ export function DataTable<T>({
                     }
                     className={
                       option === selected
-                        ? "min-h-[40px] rounded-full bg-brand px-4 py-2 text-xs font-normal text-white"
-                        : "min-h-[40px] rounded-full border border-white/15 px-4 py-2 text-xs font-light text-white/70 transition-colors hover:bg-white/5 hover:text-white"
+                        ? "accent-gradient min-h-[40px] rounded-full px-4 py-2 text-xs font-medium text-white"
+                        : "min-h-[40px] rounded-full border border-[#2a2a2a] px-4 py-2 text-xs font-light text-[#c0c0c0] transition-colors hover:bg-white/5 hover:text-white"
                     }
                   >
                     {option}
@@ -135,7 +135,7 @@ export function DataTable<T>({
         </div>
       )}
 
-      <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+      <div className="overflow-hidden rounded-[14px] border border-[#1e1e1e] bg-[#111111]">
         <div className="overflow-x-auto">
           <table
             className="w-full table-fixed text-left text-sm"
@@ -150,12 +150,12 @@ export function DataTable<T>({
               ))}
             </colgroup>
             <thead>
-              <tr className="border-b border-white/10 text-white/50">
+              <tr className="border-b border-[#1e1e1e] text-[#8a8a8a]">
                 {columns.map((col) => (
                   <th
                     key={col.id}
                     scope="col"
-                    className="truncate px-6 py-3 font-light"
+                    className="truncate px-6 py-3 text-[11.5px] font-medium uppercase tracking-wide"
                   >
                     {col.header}
                   </th>
@@ -171,7 +171,7 @@ export function DataTable<T>({
                     animate={{ opacity: 1 }}
                     exit={shouldReduceMotion ? undefined : { opacity: 0 }}
                     transition={{ duration: 0.12 }}
-                    className="border-b border-white/5 text-white/80 last:border-0"
+                    className="border-b border-[#191919] text-[#d0d0d0] transition-colors last:border-0 hover:bg-[#161616]"
                   >
                     {columns.map((col) => (
                       <td
@@ -191,7 +191,7 @@ export function DataTable<T>({
                 <tr>
                   <td
                     colSpan={columns.length}
-                    className="px-6 py-8 text-center text-white/40"
+                    className="px-6 py-8 text-center text-[#8a8a8a]"
                   >
                     {emptyMessage}
                   </td>

@@ -1,8 +1,9 @@
 "use client";
 
 import {
-  Line,
-  LineChart,
+  Area,
+  AreaChart,
+  CartesianGrid,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -21,33 +22,38 @@ export function AttendanceLineChart({ data }: Props) {
 
   return (
     <ResponsiveContainer width="100%" height={260}>
-      <LineChart data={chartData}>
-        <XAxis
-          dataKey="dateLabel"
-          stroke="rgba(255,255,255,0.4)"
-          fontSize={12}
+      <AreaChart data={chartData}>
+        <defs>
+          <linearGradient id="attendance-fill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={BRAND} stopOpacity={0.35} />
+            <stop offset="100%" stopColor={BRAND} stopOpacity={0} />
+          </linearGradient>
+        </defs>
+        <CartesianGrid
+          stroke="#1c1c1c"
+          strokeDasharray="3 4"
+          vertical={false}
         />
-        <YAxis
-          stroke="rgba(255,255,255,0.4)"
-          fontSize={12}
-          allowDecimals={false}
-        />
+        <XAxis dataKey="dateLabel" stroke="#5f5f5f" fontSize={12} />
+        <YAxis stroke="#5f5f5f" fontSize={12} allowDecimals={false} />
         <Tooltip
           contentStyle={{
             background: "#111",
-            border: "1px solid rgba(255,255,255,0.15)",
+            border: "1px solid #262626",
+            borderRadius: 10,
           }}
-          labelStyle={{ color: "#fff" }}
+          labelStyle={{ color: "#f2f2f2" }}
           formatter={(value) => [`${value}`, "Attended"]}
         />
-        <Line
+        <Area
           type="monotone"
           dataKey="attended"
           stroke={BRAND}
           strokeWidth={2}
-          dot={{ r: 3, fill: BRAND }}
+          fill="url(#attendance-fill)"
+          dot={{ r: 3.5, fill: BRAND, stroke: "#0a0a0a", strokeWidth: 2 }}
         />
-      </LineChart>
+      </AreaChart>
     </ResponsiveContainer>
   );
 }

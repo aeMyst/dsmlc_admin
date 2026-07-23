@@ -12,18 +12,13 @@ const BASE =
   "inline-flex min-h-[44px] cursor-pointer items-center justify-center rounded-full px-5 py-2.5 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-60";
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary: "bg-brand font-normal text-white hover:bg-brand-hover",
+  primary: "accent-gradient accent-glow font-medium text-white",
   secondary:
-    "border border-white/15 font-light text-white/70 hover:bg-white/5 hover:text-white",
+    "border border-[#2a2a2a] font-light text-[#c0c0c0] hover:bg-white/5 hover:text-white",
   outline:
-    "gap-2 border border-white/15 font-light text-white/70 hover:border-white/30 hover:text-white",
+    "gap-2 border border-[#2a2a2a] font-light text-[#c0c0c0] hover:border-white/30 hover:text-white",
 };
 
-// framer-motion's HTMLMotionProps re-types a handful of event handlers
-// (drag/animation events) to its own gesture types, which collide with the
-// plain React typings on ButtonHTMLAttributes. Omitting them here keeps
-// <Button> a drop-in replacement everywhere it's already used, since none of
-// those props are used in this app.
 type OmittedForMotion =
   | "onDrag"
   | "onDragStart"
@@ -32,8 +27,10 @@ type OmittedForMotion =
   | "onAnimationEnd"
   | "onAnimationIteration";
 
-interface ButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, OmittedForMotion> {
+interface ButtonProps extends Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  OmittedForMotion
+> {
   variant?: ButtonVariant;
 }
 
