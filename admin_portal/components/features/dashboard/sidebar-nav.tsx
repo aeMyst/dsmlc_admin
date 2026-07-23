@@ -3,22 +3,25 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
+import { memo } from "react";
 
 import { siteConfig } from "@/config/site";
 import { NAV_ICONS } from "@/lib/nav-icons";
 
-interface SidebarNavProps {
-  instanceId?: string;
+interface NavListProps {
+  activeHref: string | null;
+  instanceId: string;
 }
 
-export function SidebarNav({ instanceId = "desktop" }: SidebarNavProps) {
-  const pathname = usePathname();
-
+const NavList = memo(function NavList({
+  activeHref,
+  instanceId,
+}: NavListProps) {
   return (
     <nav className="mt-8 flex flex-col gap-2">
       {siteConfig.dashboardNav.map((item) => {
         const Icon = NAV_ICONS[item.icon];
-        const isActive = pathname === item.href;
+        const isActive = item.href === activeHref;
 
         return (
           <Link
@@ -44,4 +47,21 @@ export function SidebarNav({ instanceId = "desktop" }: SidebarNavProps) {
       })}
     </nav>
   );
+});
+
+interface SidebarNavProps {
+  instanceId?: string;
+}
+
+export function SidebarNav({ instanceId = "desktop" }: SidebarNavProps) {
+  const pathname = usePathname();
+
+  const activeHref =
+    siteConfig.dashboardNav.find((item) =>
+      item.href === "/dashboard"
+        ? pathname === "/dashboard"
+        : pathname === item.href || pathname.startsWith(`${item.href}/`),
+    )?.href ?? null;
+
+  return <NavList activeHref={activeHref} instanceId={instanceId} />;
 }

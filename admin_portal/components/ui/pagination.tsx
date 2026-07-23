@@ -25,20 +25,20 @@ export function PaginationControls({
   }
 
   return (
-    <div className="flex items-center justify-between border-t border-white/10 px-6 py-3">
+    <div className="flex items-center justify-between border-t border-[#1e1e1e] px-6 py-3">
       <Link
         href={buildHref(prevPage)}
         aria-disabled={currentPage === 1}
         className={
           currentPage === 1
-            ? "pointer-events-none rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/20"
-            : "rounded-full border border-white/15 px-3 py-1.5 text-xs text-white/70 transition-colors hover:bg-white/5 hover:text-white"
+            ? "pointer-events-none rounded-full border border-[#1e1e1e] px-3 py-1.5 text-xs text-[#4a4a4a]"
+            : "rounded-full border border-[#2a2a2a] px-3 py-1.5 text-xs text-[#c0c0c0] transition-colors hover:bg-white/5 hover:text-white"
         }
       >
         Previous
       </Link>
 
-      <span className="text-xs font-light text-white/40">
+      <span className="text-xs font-light text-[#8a8a8a]">
         Page {currentPage} of {totalPages}
       </span>
 
@@ -47,8 +47,8 @@ export function PaginationControls({
         aria-disabled={currentPage === totalPages}
         className={
           currentPage === totalPages
-            ? "pointer-events-none rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/20"
-            : "rounded-full border border-white/15 px-3 py-1.5 text-xs text-white/70 transition-colors hover:bg-white/5 hover:text-white"
+            ? "pointer-events-none rounded-full border border-[#1e1e1e] px-3 py-1.5 text-xs text-[#4a4a4a]"
+            : "rounded-full border border-[#2a2a2a] px-3 py-1.5 text-xs text-[#c0c0c0] transition-colors hover:bg-white/5 hover:text-white"
         }
       >
         Next
