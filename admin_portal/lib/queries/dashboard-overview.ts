@@ -27,7 +27,6 @@ export interface RsvpPoint {
   atDoor: number
 }
 
-/** Per-KPI sparkline series, ordered oldest → newest. */
 export interface OverviewTrends {
   events: number[]
   attendees: number[]
@@ -42,11 +41,6 @@ export interface DashboardOverview {
   trends: OverviewTrends
 }
 
-/**
- * Pulls every event's live stats once (from EVENTS/REGISTRATIONS/FEEDBACK via
- * getEventsWithStats) and derives the overview cards + both time-series
- * charts from that single result, instead of hitting Supabase three times.
- */
 export async function getDashboardOverview(): Promise<DashboardOverview> {
   const events = await getEventsWithStats()
 
@@ -68,9 +62,6 @@ export async function getDashboardOverview(): Promise<DashboardOverview> {
 
   const chronological = [...events].sort((a, b) => (a.event_date < b.event_date ? -1 : 1))
 
-  // Sparkline series. Events/attendees accumulate (they only ever grow);
-  // turnout and rating are point-in-time values per event, so they're
-  // plotted as-is to show the shape of the variation over time.
   let runningAttendees = 0
   const trends: OverviewTrends = {
     events: chronological.map((_, i) => i + 1),

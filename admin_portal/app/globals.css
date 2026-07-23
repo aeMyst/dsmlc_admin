@@ -9,7 +9,7 @@
   background-image: linear-gradient(135deg, #ff5a2e, #d43a13);
 }
 .accent-glow {
-  box-shadow: 0 4px 14px rgba(255, 90, 46, 0.35);
+  box-shadow: 0 4px 16px rgba(255, 90, 46, 0.35);
 }
 .logo-glow {
   box-shadow: 0 0 16px rgba(255, 90, 46, 0.45);

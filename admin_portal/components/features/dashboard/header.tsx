@@ -6,11 +6,11 @@ import { siteConfig } from "@/config/site";
 import { NAV_ICONS } from "@/lib/nav-icons";
 
 const DESCRIPTIONS: Record<string, string> = {
-  "/dashboard": "Overview of club event performance this semester",
+  "/dashboard": "Overview of club event performance this school year",
   "/dashboard/events":
     "Browse events, view details, and export registration data",
   "/dashboard/memberships": "Manage club members and mailing list subscribers",
-  "/dashboard/people": "Everyone on record, plus course-credit exports",
+  "/dashboard/people": "Everyone on record this year",
 };
 
 function resolveTitle(pathname: string) {

@@ -41,7 +41,7 @@ export default async function DashboardPage() {
           index={0}
           label="Total Events"
           value={stats.totalEvents}
-          caption="This semester"
+          caption="This School Year"
           icon={<Calendar className="h-3.5 w-3.5" strokeWidth={2} />}
           trend={trends.events}
         />
