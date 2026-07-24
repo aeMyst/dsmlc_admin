@@ -9,9 +9,7 @@ interface ShaderBackgroundProps {
   children: React.ReactNode;
 }
 
-// App palette: near-black base with the brand orange and its light accent
-// as the moving highlights (was brown/white).
-const GRADIENT_COLORS = ["#0a0a0a", "#ff5a2e", "#0a0a0a", "#ff8a5c", "#0a0a0a"];
+const GRADIENT_COLORS = ["#000000", "#ff5a2e", "#000000", "#ff8a5c", "#5b8dee"];
 
 export function ShaderBackground({ children }: ShaderBackgroundProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -76,10 +74,6 @@ export function ShaderBackground({ children }: ShaderBackgroundProps) {
         speed={0.2}
         distortion={0.8}
       />
-
-      {/* Darkening veil so the shader reads as atmosphere behind the card
-          rather than competing with the form for attention. */}
-      <div className="absolute inset-0 bg-[#0a0a0a]/70" aria-hidden="true" />
 
       {children}
     </div>
