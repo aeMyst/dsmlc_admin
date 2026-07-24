@@ -1,6 +1,6 @@
 # DSMLC Admin Portal
 
-An internal analytics and management dashboard for the DSMLC (UCalgary) club. Built with Next.js App Router and Supabase, it gives club executives a single place to track events, memberships, registrations, and overall club performance — with authenticated access, CSV exports, and live charts.
+An internal analytics and management dashboard for the DSMLC (UCalgary) club. Built with Next.js App Router and Supabase, it gives club executives a single place to track events, memberships, registrations, and overall club performance with authenticated access, CSV exports, and live charts.
 
 ---
 
