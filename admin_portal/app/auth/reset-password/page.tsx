@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 import type React from "react";
 import { Lock } from "lucide-react";
@@ -13,6 +14,7 @@ import { Button } from "@/components/ui/button";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
+  const shouldReduceMotion = useReducedMotion();
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,7 +70,12 @@ export default function ResetPasswordPage() {
   if (sessionError) {
     return (
       <main className="relative z-20 flex min-h-screen items-center justify-center px-6">
-        <div className="max-w-sm text-center">
+        <motion.div
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-sm text-center"
+        >
           <p className="mb-4 text-sm font-light text-[#9a9a9a]">
             This reset link is invalid or has expired.
           </p>
@@ -78,7 +85,7 @@ export default function ResetPasswordPage() {
           >
             Request a new link
           </Link>
-        </div>
+        </motion.div>
       </main>
     );
   }
@@ -86,23 +93,38 @@ export default function ResetPasswordPage() {
   if (!sessionReady) {
     return (
       <main className="relative z-20 flex min-h-screen items-center justify-center px-6">
-        <p className="text-sm font-light text-[#9a9a9a]">
+        <motion.p
+          initial={shouldReduceMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="text-sm font-light text-[#9a9a9a]"
+        >
           Verifying your reset link…
-        </p>
+        </motion.p>
       </main>
     );
   }
 
   return (
     <main className="relative z-20 flex min-h-screen items-center justify-center px-6 py-16">
-      <div className="relative w-full max-w-md rounded-3xl border border-[#1e1e1e] bg-[#0d0d0d]/95 p-10 backdrop-blur-2xl">
-        <div
+      <motion.div
+        initial={
+          shouldReduceMotion ? false : { opacity: 0, y: 16, scale: 0.98 }
+        }
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="relative w-full max-w-md rounded-3xl border border-[#1e1e1e] bg-[#0d0d0d]/95 p-10 backdrop-blur-2xl"
+      >
+        <motion.div
           aria-hidden="true"
-          className="absolute left-1 right-1 top-0 h-px rounded-full"
+          className="absolute left-1 right-1 top-0 h-px origin-center rounded-full"
           style={{
             background:
               "linear-gradient(90deg, transparent, #ff5a2e, transparent)",
           }}
+          initial={shouldReduceMotion ? false : { scaleX: 0, opacity: 0 }}
+          animate={{ scaleX: 1, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         />
 
         <h1 className="mb-2 text-3xl font-bold text-[#f2f2f2]">
@@ -123,6 +145,7 @@ export default function ResetPasswordPage() {
               autoComplete="new-password"
               icon={<Lock className="h-4 w-4" strokeWidth={1.75} />}
               onChange={(e) => setPassword(e.target.value)}
+              index={0}
             />
             <PasswordStrength value={password} />
           </div>
@@ -135,6 +158,7 @@ export default function ResetPasswordPage() {
             minLength={8}
             autoComplete="new-password"
             icon={<Lock className="h-4 w-4" strokeWidth={1.75} />}
+            index={1}
           />
 
           {error && <p className="text-sm font-light text-red-400">{error}</p>}
@@ -148,7 +172,7 @@ export default function ResetPasswordPage() {
             {isSubmitting ? "Saving…" : "Update password"}
           </Button>
         </form>
-      </div>
+      </motion.div>
     </main>
   );
 }

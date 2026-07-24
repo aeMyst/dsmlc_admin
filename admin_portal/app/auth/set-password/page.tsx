@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 import type React from "react";
 import { Lock, User } from "lucide-react";
@@ -13,6 +14,7 @@ import { Button } from "@/components/ui/button";
 
 export default function SetPasswordPage() {
   const router = useRouter();
+  const shouldReduceMotion = useReducedMotion();
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -89,9 +91,14 @@ export default function SetPasswordPage() {
     return (
       <ShaderBackground>
         <main className="relative z-20 flex min-h-screen items-center justify-center px-6">
-          <p className="text-sm font-light text-[#9a9a9a]">
+          <motion.p
+            initial={shouldReduceMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="text-sm font-light text-[#9a9a9a]"
+          >
             Verifying your invite link…
-          </p>
+          </motion.p>
         </main>
       </ShaderBackground>
     );
@@ -100,14 +107,24 @@ export default function SetPasswordPage() {
   return (
     <ShaderBackground>
       <main className="relative z-20 flex min-h-screen items-center justify-center px-6 py-16">
-        <div className="relative w-full max-w-xl rounded-3xl border border-[#1e1e1e] bg-[#0d0d0d]/95 p-10 backdrop-blur-2xl md:p-12">
-          <div
+        <motion.div
+          initial={
+            shouldReduceMotion ? false : { opacity: 0, y: 16, scale: 0.98 }
+          }
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="relative w-full max-w-xl rounded-3xl border border-[#1e1e1e] bg-[#0d0d0d]/95 p-10 backdrop-blur-2xl md:p-12"
+        >
+          <motion.div
             aria-hidden="true"
-            className="absolute left-1 right-1 top-0 h-px rounded-full"
+            className="absolute left-1 right-1 top-0 h-px origin-center rounded-full"
             style={{
               background:
                 "linear-gradient(90deg, transparent, #ff5a2e, transparent)",
             }}
+            initial={shouldReduceMotion ? false : { scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           />
 
           <h1 className="mb-2 text-3xl font-bold text-[#f2f2f2] md:text-4xl">
@@ -126,6 +143,7 @@ export default function SetPasswordPage() {
                 required
                 autoComplete="given-name"
                 icon={<User className="h-4 w-4" strokeWidth={1.75} />}
+                index={0}
               />
               <AuthField
                 label="Last name"
@@ -133,6 +151,7 @@ export default function SetPasswordPage() {
                 required
                 autoComplete="family-name"
                 icon={<User className="h-4 w-4" strokeWidth={1.75} />}
+                index={1}
               />
             </div>
 
@@ -146,6 +165,7 @@ export default function SetPasswordPage() {
                 autoComplete="new-password"
                 icon={<Lock className="h-4 w-4" strokeWidth={1.75} />}
                 onChange={(e) => setPassword(e.target.value)}
+                index={2}
               />
               <PasswordStrength value={password} />
             </div>
@@ -158,6 +178,7 @@ export default function SetPasswordPage() {
               minLength={8}
               autoComplete="new-password"
               icon={<Lock className="h-4 w-4" strokeWidth={1.75} />}
+              index={3}
             />
 
             {error && (
@@ -173,7 +194,7 @@ export default function SetPasswordPage() {
               {isSubmitting ? "Saving…" : "Complete setup"}
             </Button>
           </form>
-        </div>
+        </motion.div>
       </main>
     </ShaderBackground>
   );
